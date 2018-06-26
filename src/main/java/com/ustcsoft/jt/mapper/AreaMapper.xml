@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ustcsoft.jt.mapper.AreaMapper">
+
+
+    <select id="getAreaChild" resultType="com.ustcsoft.jt.vo.AreaVO">
+        SELECT
+            qh.XING_ZHENG_QU_HUA_DAI_MA AS areaId,
+            qh.XING_ZHENG_QU_HUA_MING_CHENG AS areaName,
+            qh.FU_XING_ZHENG_QU_HUA_DAI_MA parentAreaId
+            FROM
+            u_com00.m_xzqhdm qh
+            WHERE
+            qh.XING_ZHENG_QU_HUA_DENG_JI <![CDATA[<=]]> #{1}
+            AND qh.XING_ZHENG_QU_HUA_DAI_MA LIKE CONCAT(
+            #{0},'%')
+    </select>
+
+    <select id="getChildByPId" resultType="com.ustcsoft.jt.vo.AreaVO" parameterType="string">
+        SELECT
+            qh.XING_ZHENG_QU_HUA_DAI_MA AS areaId,
+            qh.XING_ZHENG_QU_HUA_MING_CHENG AS areaName,
+            qh.XING_ZHENG_QU_HUA_DENG_JI AS areaLV,
+            qh.FU_XING_ZHENG_QU_HUA_DAI_MA AS parentAreaId
+        FROM
+            u_com00.m_xzqhdm qh
+        WHERE
+            qh.FU_XING_ZHENG_QU_HUA_DAI_MA = #{pId}
+    </select>
+
+</mapper>

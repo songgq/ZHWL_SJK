@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<context:property-placeholder location="classpath:env.properties" />
+
+	<bean id="dataSource" class="com.ustcsoft.framework.vo.DruidDateSource" init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${database_driver}"/>
+		<property name="url" value="${database_url}" />
+		<property name="username" value="${database_username}" />
+		<property name="password" value="${database_password}" />
+		<property name="initialSize" value="${database_initialSize}" />
+		<property name="maxActive" value="${database_maxActive}" />
+		<property name="maxWait" value="${database_maxWait}" />
+		<property name="minIdle" value="${database_minIdle}" />
+		<property name="validationQuery" value="${database_validateQuery}"/>
+		<property name="filters" value="wall"/>
+
+
+	</bean>
+
+	<!-- 事务配置 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!-- 使用annotation定义事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+
+</beans>
+
+<!--
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<context:property-placeholder location="classpath:env.properties" />
+
+	<bean id="dataSource1" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${database_driver}"/>
+		<property name="url" value="${database_url}" />
+		<property name="username" value="${database_username}" />
+		<property name="password" value="${database_password}" />
+		<property name="initialSize" value="${database_initialSize}" />
+		<property name="maxActive" value="${database_maxActive}" />
+		<property name="maxWait" value="${database_maxWait}" />
+		<property name="minIdle" value="${database_minIdle}" />
+		<property name="validationQuery" value="${database_validateQuery}"/>
+		<property name="filters" value="wall"/>
+	</bean>
+
+	<bean id="dataSource2" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${database_driver2}"/>
+		<property name="url" value="${database_url2}" />
+		<property name="username" value="${database_username2}" />
+		<property name="password" value="${database_password2}" />
+		<property name="initialSize" value="${database_initialSize2}" />
+		<property name="maxActive" value="${database_maxActive2}" />
+		<property name="maxWait" value="${database_maxWait2}" />
+		<property name="minIdle" value="${database_minIdle2}" />
+		<property name="validationQuery" value="${database_validateQuery2}"/>
+		<property name="filters" value="wall"/>
+	</bean>
+
+
+	&lt;!&ndash;多数据源配置&ndash;&gt;
+	<bean id="dataSource" class="com.ustcsoft.jt.datasource.DynamicDataSource">
+		<property name="targetDataSources">
+			<map key-type="java.lang.String">
+				<entry key="dataSource1" value-ref="dataSource1"/>
+				<entry key="dataSource2" value-ref="dataSource2"/>
+			</map>
+		</property>
+		&lt;!&ndash;默认本地数据源&ndash;&gt;
+		<property name="defaultTargetDataSource" ref="dataSource1" />
+	</bean>
+
+	&lt;!&ndash; 事务配置 &ndash;&gt;
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	&lt;!&ndash; 使用annotation定义事务 &ndash;&gt;
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+
+</beans>
+-->

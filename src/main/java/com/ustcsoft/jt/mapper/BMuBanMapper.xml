@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ustcsoft.jt.mapper.BMuBanMapper">
+
+    <resultMap type="com.ustcsoft.jt.vo.BMuBan" id="bMuBanMap">
+            <result property="id" column="id"/>
+            <result property="mbmc" column="mbmc"/>
+            <result property="status" column="status"/>
+            <result property="creater" column="creater"/>
+            <result property="createTime" column="createTime"/>
+            <result property="updater" column="updater"/>
+            <result property="updateTime" column="updateTime"/>
+    </resultMap>
+
+    <sql id="columns">
+            id as id,
+            mbmc as mbmc,
+            status as status,
+            creater as creater,
+            createTime as createTime,
+            updater as updater,
+            updateTime as updateTime
+    </sql>
+
+    <sql id="sql_condition">
+
+    </sql>
+
+    <!--分页查询-->
+    <select id="queryPage" parameterType="com.ustcsoft.jt.vo.BMuBan" resultType="com.ustcsoft.jt.vo.BMuBan">
+            select
+                id as id,
+                mbmc as mbmc,
+                status as status,
+                u.user_name as creater,
+                createTime as createTime,
+                updater as updater,
+                updateTime as updateTime
+            from b_mu_ban mu LEFT JOIN u_com00.m_user u
+            on mu.creater = u.user_id
+            where status != '2'
+            <if test='bMuBan.mbmc != null and bMuBan.mbmc != ""'>
+                and mu.mbmc like CONCAT('%',#{bMuBan.mbmc},'%')
+            </if>
+            <if test='bMuBan.status != null and bMuBan.status != ""'>
+                and mu.status = #{bMuBan.status}
+            </if>
+            ORDER by mu.createTime desc
+    </select>
+
+    <select id="getMuBanAndZhiBiao" parameterType="java.lang.String" resultType="com.ustcsoft.jt.vo.BZhiBiao">
+        SELECT
+            zb.id,
+            zb.`value`,
+            zb.hangci,
+            zb.jibie
+        FROM
+            b_mu_ban mb,
+            b_zhi_biao zb,
+            b_muban_zhibiao mz
+        WHERE
+            mb.id = mz.muban_id
+        AND zb.id = mz.zhibiao_id
+        AND muban_id = #{muBanId}
+        AND mb.status != '2'
+        AND zb.status = '1'
+        AND mz.status = '1'
+        ORDER BY zb.hangci
+    </select>
+    
+    <!--新增-->
+    <insert id="insert" parameterType="com.ustcsoft.jt.vo.BMuBan">
+        <!--返回主键-->
+        <selectKey resultType="java.lang.String" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into b_mu_ban
+            (
+                id,
+                mbmc,
+                status,
+                creater,
+                createTime,
+                updater,
+                updateTime
+            ) values
+            (
+                #{id},
+                #{mbmc},
+                #{status},
+                #{creater},
+                #{createTime},
+                #{updater},
+                #{updateTime}
+            )
+    </insert>
+
+    <insert id="insertMuBanAndZhiBiao" parameterType="java.util.List">
+        INSERT INTO b_muban_zhibiao (muban_id, zhibiao_id) VALUE
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.mubanId}, #{item.zhibiaoId})
+        </foreach>
+    </insert>
+
+    <!--修改-->
+    <update id="update" parameterType="com.ustcsoft.jt.vo.BMuBan">
+        update b_mu_ban
+            set
+                <if test='bMuBan.mbmc != null and bMuBan.mbmc != ""'>
+                 mbmc = #{bMuBan.mbmc},
+                </if>
+                <if test='bMuBan.status != null and bMuBan.status != ""'>
+                 status = #{bMuBan.status},
+                </if>
+                <if test='bMuBan.updater != null and bMuBan.updater != ""'>
+                 updater = #{bMuBan.updater},
+                </if>
+                <if test='bMuBan.updateTime != null and bMuBan.updateTime != ""'>
+                 updateTime = #{bMuBan.updateTime}
+                </if>
+        where 1 = 1 AND id = #{bMuBan.id}
+    </update>
+
+    <!--删除模板-->
+    <delete id="deleteMuBan" parameterType="string">
+        UPDATE b_mu_ban set status = '2' WHERE id = #{muBanId}
+    </delete>
+    <!--删除模板指标关联表-->
+    <delete id="deleteMuBanZHiBiaos" parameterType="string">
+        UPDATE b_muban_zhibiao set status = '0' WHERE muban_id = #{muBanId}
+    </delete>
+</mapper>

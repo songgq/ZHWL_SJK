@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.ustcsoft.jt.mapper.SysUserMapper">
+	 <!--  功能说明:根据条件查询人员-->
+	<select id="selectOrgUserPage" resultType="com.ustcsoft.jt.vo.SysUserVO" parameterType="com.ustcsoft.jt.vo.SysUserVO">
+		SELECT 
+		DISTINCT(a.USER_ID)
+		  , a.ORG_ID
+		  , a.NAME
+		  , a.USER_PWD
+		  , a.USER_NAME
+		  , a.SEX
+		  , a.TEL
+		  , a.EMAIL
+		  , b.ORG_NAME
+		  , a.SHEN_FEN_ZHENG_HAO as idNo
+		  ,a.IS_HAI_SHI
+		  ,a.login_type
+	      ,a.SYNC_FLAG
+	      ,a.SEQ      
+	      ,a.SEQ_STATUS 
+		FROM 
+		    u_com00.M_USER a 
+		     LEFT JOIN u_com00.M_ORG b ON a.ORG_ID = b.ORG_ID
+		     WHERE   1=1
+		     <if test="sysUser.chaXunFangShi == null or sysUser.chaXunFangShi == ''">
+			     and b.ORG_ID like #{sysUser.searchOrgId}
+		    </if>
+		    <if test="sysUser.chaXunFangShi == '01' ">
+			      and b.ORG_ID = #{sysUser.orgId}
+		    </if>
+		    <if test="sysUser.chaXunFangShi == '02' ">
+			     and b.ORG_ID like #{sysUser.searchOrgId}  and b.ORG_ID !=#{sysUser.orgId}
+		    </if>
+			<if test="sysUser.userName != null and sysUser.userName != ''">
+		      and   a.USER_NAME like #{sysUser.userName}
+		    </if>
+		 	 <if test="sysUser.name != null and sysUser.name != ''">
+			   and  a.NAME like #{sysUser.name}
+		    </if>
+		 	<if test="sysUser.idNo != null and sysUser.idNo != ''">
+			  and a.SHEN_FEN_ZHENG_HAO like #{sysUser.idNo}
+		    </if>
+			<if test="sysUser.tel != null and sysUser.tel  != ''">
+		        and a.TEL like #{sysUser.tel}
+		    </if>
+		order by a.USER_ID  desc
+	</select>
+	
+	 <!--  功能说明:根据条件查询人员(非管理员)-->
+	<select id="selectOrgUserNotAdminPage" resultType="com.ustcsoft.jt.vo.SysUserVO" parameterType="com.ustcsoft.jt.vo.SysUserVO">
+		SELECT 
+		DISTINCT(a.USER_ID)
+		  , a.ORG_ID
+		  , a.NAME
+		  , a.USER_PWD
+		  , a.USER_NAME
+		  , a.SEX
+		  , a.TEL
+		  , a.EMAIL
+		  , b.ORG_NAME
+		  , c.DEPT_NAME
+		  , c.DEPT_ID
+		  , a.SHEN_FEN_ZHENG_HAO as idNo
+		  ,a.IS_HAI_SHI
+		  ,a.login_type
+	      ,a.SYNC_FLAG
+	      ,a.SEQ      
+	      ,a.SEQ_STATUS 
+		FROM 
+		    u_com00.M_USER a 
+		     LEFT JOIN u_com00.M_ORG b ON a.ORG_ID = b.ORG_ID
+		     LEFT JOIN u_com00.M_DEPT c ON a.DEPT_ID = c.DEPT_ID
+		     WHERE   1=1 AND a.USER_ID != '1000000000000001'
+		     <if test="sysUser.orgId != null and sysUser.orgId != ''">
+			     and a.ORG_ID = #{sysUser.orgId}
+		    </if>
+			<if test="sysUser.deptId != null and sysUser.deptId != ''">
+			   and  c.DEPT_ID = #{sysUser.deptId}
+		    </if>
+			<if test="sysUser.userName != null and sysUser.userName != ''">
+		      and   a.USER_NAME like #{sysUser.userName}
+		    </if>
+		 	 <if test="sysUser.name != null and sysUser.name != ''">
+			    and a.NAME like #{sysUser.name}
+		    </if>
+			
+			<if test="sysUser.userOrgId != null and sysUser.userOrgId != ''">
+		       and a.ORG_ID = #{sysUser.userOrgId }
+		    </if>
+		 	
+		 	<if test="sysUser.idNo != null and sysUser.idNo != ''">
+			    and  a.SHEN_FEN_ZHENG_HAO like #{sysUser.idNo}
+		    </if>
+			<if test="sysUser.tel != null and sysUser.tel  != ''">
+		       and a.TEL like #{sysUser.tel}
+		    </if>
+		order by a.ORG_ID ,c.DEPT_ID asc
+	</select>
+	
+	<select id="findUserByOrgId" resultType="com.ustcsoft.jt.vo.SysUserVO" parameterType="java.lang.String">
+			SELECT
+		    O.ORG_ID orgId,
+		    O.ORG_NAME orgName,
+		    O.ORG_SIMPLENAME orgSimpleName,
+		    O.ORG_CODE orgCode,
+		    O.REMARK remark,
+			O.MANAGER manager,
+			O.CONTACT_PERSON contactPerson,
+			O.CONTACT_TEL contactTel,
+			O.EMAIL email,
+			O.STATUS STATUS,
+			O.WANG_ZHI website,
+			O.DI_ZHI address,
+			O.JI_GOU_ZHI_NENG FUNCTION,
+			O.ORG_LV orgLv,
+			O.HANG_YE_ID tradeType,
+			O.DU_LI_ZHI_FA duLiZhiFa,
+			O.REG_CODE regCode,
+			O.PEOPLE_GOVERNMENT government,
+			O.YOU_BIAN AS youBian,
+			O.JIAN_CE_ZHAN_HAO jianCeZhanHao
+		FROM
+		    u_com00.M_ORG O
+		WHERE
+		    O.ORG_ID = #{orgId}
+	</select>
+	
+	 <!-- 查询醉的用户ID-->
+    <select id="findMaxUserId"   resultType="java.lang.String" >
+	select  max(O.USER_ID) 
+	       FROM 
+		   u_com00.M_USER O 	
+	</select>
+	
+	
+		<!--  功能说明:新增人员-->
+	<insert id="insertSysUser"  parameterType="com.ustcsoft.jt.vo.SysUserVO">
+		insert into u_com00.M_user(
+					USER_ID,
+					USER_NAME,
+					USER_PWD,
+					NAME,
+					ORG_ID,
+					SEX,
+					SHEN_FEN_ZHENG_HAO,
+					TEL,
+					EMAIL,
+					DEPT_ID,
+					CERT_ID,
+					ZFRYBH,
+					ZHI_FA_ZHENG_HAO,
+					ZHI_WU,
+					LOGIN_TYPE
+		                ) values 
+	        	   (
+				   #{sysUser.userId},
+				   #{sysUser.userName},
+				   #{sysUser.userPwd},
+				   #{sysUser.name},
+				   #{sysUser.orgId},
+				   #{sysUser.sex},
+				   #{sysUser.idNo},
+				   #{sysUser.tel},
+				   #{sysUser.email},
+				   #{sysUser.deptId},
+				   #{sysUser.certId},
+				   #{sysUser.zfrybh},
+				   #{sysUser.zhiFaZhengHao},
+				   #{sysUser.zhiWu},
+				   #{sysUser.loginType}
+	              )	
+	</insert>
+	
+	
+	<!-- 更新用户-->
+	<update id="updateUser" parameterType="com.ustcsoft.jt.vo.SysUserVO"> 
+  		update u_com00.M_USER set 
+		            USER_NAME=#{sysUser.userName}, 
+		            NAME=#{sysUser.name},
+		            SEX=#{sysUser.sex},
+		            SHEN_FEN_ZHENG_HAO=#{sysUser.idNo},
+		            TEL=#{sysUser.tel},
+		            EMAIL=#{sysUser.email},
+		            DEPT_ID=#{sysUser.deptId},
+		            ORG_ID=#{sysUser.orgId},
+					CERT_ID=#{sysUser.certId},
+					ZFRYBH=#{sysUser.zfrybh},
+					ZHI_FA_ZHENG_HAO=#{sysUser.zhiFaZhengHao},
+					ZHI_WU=#{sysUser.zhiWu}
+	 	where
+				USER_ID = #{sysUser.userId}
+	</update>
+	
+	
+	<!-- 删除用户-->
+	<delete id="deleteSysUser"  parameterType="com.ustcsoft.jt.vo.SysUserVO">
+		delete from  u_com00.M_USER where 
+				           USER_ID = #{sysUser.userId}
+	</delete>
+	
+
+	<!-- 删除用户-角色-->
+	<delete id="deleteSysUserRoleByUserId"  parameterType="com.ustcsoft.jt.vo.SysUserVO">
+		delete from  M_USER_ROLE where 
+				           USER_ID = #{sysUser.userId}
+	</delete>
+
+	<!-- 重置密码-->
+	<update id="resetPassword"  parameterType="com.ustcsoft.jt.vo.SysUserVO">    
+		   update 
+		   		u_com00.M_USER
+		   set
+		   		USER_PWD = #{sysUser.userPwd}
+		   where 
+		   		USER_ID = #{sysUser.userId} 
+    </update>
+	
+	
+	<!--查找businessId -->
+	<select id="findBusinessId" resultType="java.lang.String"  parameterType="java.lang.String">
+		select business_id from u_com00.m_org where org_id=#{orgId}
+    </select>
+</mapper>

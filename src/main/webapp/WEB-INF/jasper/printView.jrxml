@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ChuFaTingZhengBaoGaoShu" language="groovy" pageWidth="794" pageHeight="1080" columnWidth="674" leftMargin="60" rightMargin="60" topMargin="45" bottomMargin="45" uuid="eb0cef58-a8f9-4cb1-88bf-d285bd9ef5d0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="572"/>
+	<style name="conStyle" vAlign="Middle" fontName="宋体" fontSize="16" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+	<style name="autoFontStyle">
+		<conditionalStyle>
+			<style/>
+		</conditionalStyle>
+	</style>
+	<style name="titleStyle" vAlign="Middle" fontName="宋体" fontSize="23" isBold="true">
+		<paragraph lineSpacing="Single"/>
+	</style>
+	<queryString>
+		<![CDATA[select		  BAO_GAO_SHU_ID "baoGaoShuId"
+		, CHU_FA_SHI_JIAN_ID "chuFaShiJianId"
+		, AN_JIAN_MING_CHENG "anjianMingCheng"
+		, ZHU_CHI_REN "zhuChiRen"
+		, TING_ZHENG_YUAN "tingZhengYuan"
+		, SHU_JI_YUAN "shuJiYuan"
+		, CHU_LI_YI_JIAN "chuLiYiJian"
+		, CHU_LI_RI_QI "chuLiRiQi"
+		, SHEN_HE_YI_JIAN "shenHeYiJian"
+		, SHEN_HE_RI_QI "shenHeRiQi"
+		, BEI_ZHU "beiZhu"
+		, ZHUANG_TAI1 "zhuangTai1"
+		, ZHUANG_TAI2 "zhuangTai2"
+		, JI_BEN_QING_KUANG_ZHAI_YAO "jiBenQingKuangZhaiYao"
+		from		XZCF_D_TZBGS t
+		where  t.CHU_FA_SHI_JIAN_ID = 6771]]>
+	</queryString>
+	<field name="baoGaoShuId" class="java.lang.String"/>
+	<field name="chuFaShiJianId" class="java.lang.String"/>
+	<field name="anjianMingCheng" class="java.lang.String"/>
+	<field name="zhuChiRen" class="java.lang.String"/>
+	<field name="tingZhengYuan" class="java.lang.String"/>
+	<field name="shuJiYuan" class="java.lang.String"/>
+	<field name="chuLiYiJian" class="java.lang.String"/>
+	<field name="chuLiRiQi" class="java.lang.String"/>
+	<field name="shenHeYiJian" class="java.lang.String"/>
+	<field name="shenHeRiQi" class="java.lang.String"/>
+	<field name="beiZhu" class="java.lang.String"/>
+	<field name="zhuangTai1" class="java.lang.String"/>
+	<field name="zhuangTai2" class="java.lang.String"/>
+	<field name="jiBenQingKuangZhaiYao" class="java.lang.String"/>
+	<field name="tingZhengZhuChiRenQianZhang" class="java.lang.String"/>
+	<field name="fuZeRenQianZhang" class="java.lang.String"/>
+	<field name="fuZeRenQianZhangDqr" class="java.lang.String"/>
+	<pageHeader>
+		<band height="121">
+			<staticText>
+				<reportElement uuid="ef67a040-d433-4030-bd69-9bc28a05fef8" style="titleStyle" x="0" y="0" width="674" height="60"/>
+				<textElement textAlignment="Center">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[听证报告书]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="07d2d798-e3a0-4ebc-ae14-11e6d96d75ad" style="conStyle" x="0" y="60" width="95" height="61"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<text><![CDATA[案件名称：]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="bf4abd68-46a5-4bfe-85f5-52f0298b52c9" style="conStyle" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="95" y="60" width="579" height="61"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isUnderline="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="1_1_2"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{anjianMingCheng}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="30">
+			<textField>
+				<reportElement uuid="cacafc8c-9f75-46ca-864c-5b3b78fded6e" style="conStyle" x="64" y="0" width="126" height="30"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{zhuChiRen}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="4087b8c6-d35b-435a-9d79-e29b069aac31" style="conStyle" x="190" y="0" width="64" height="30"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<text><![CDATA[听证员]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="c60b673c-a5ec-493f-ba69-fb5378fa43e5" style="conStyle" x="254" y="0" width="230" height="30"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tingZhengYuan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="4087b8c6-d35b-435a-9d79-e29b069aac31" style="conStyle" x="484" y="0" width="64" height="30"/>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<text><![CDATA[书记员]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="1ad1346a-c705-4c9e-8e1b-0300f5e42420" style="conStyle" x="548" y="0" width="126" height="30"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{shuJiYuan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="4087b8c6-d35b-435a-9d79-e29b069aac31" style="conStyle" x="0" y="0" width="64" height="30"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<text><![CDATA[主持人]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="95f2cb58-ab0c-4bc3-be83-5fcf8e6b8895" x="1" y="0" width="673" height="1"/>
+			</line>
+		</band>
+		<band height="505">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="bf4abd68-46a5-4bfe-85f5-52f0298b52c9" style="conStyle" x="0" y="30" width="674" height="475"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Top" markup="html">
+					<font isUnderline="false" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph lineSpacing="1_1_2" firstLineIndent="32" leftIndent="10" rightIndent="10" spacingBefore="30" spacingAfter="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jiBenQingKuangZhaiYao}.replaceAll( "\r","")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="07d2d798-e3a0-4ebc-ae14-11e6d96d75ad" style="conStyle" x="0" y="0" width="674" height="30"/>
+				<textElement verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+					<paragraph leftIndent="10" rightIndent="10"/>
+				</textElement>
+				<text><![CDATA[听证会基本情况摘要（详见听证笔录，笔录附后）：]]></text>
+			</staticText>
+		</band>
+		<band height="320">
+			<staticText>
+				<reportElement uuid="4087b8c6-d35b-435a-9d79-e29b069aac31" style="conStyle" x="0" y="0" width="80" height="160"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[听证结
+论及处
+理意见]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4087b8c6-d35b-435a-9d79-e29b069aac31" style="conStyle" x="0" y="160" width="80" height="100"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[行政执
+法机关
+审核意
+见]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="c60b673c-a5ec-493f-ba69-fb5378fa43e5" style="conStyle" x="80" y="160" width="594" height="46"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="html">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph lineSpacing="1_1_2" firstLineIndent="32" leftIndent="10" rightIndent="10" spacingBefore="5" spacingAfter="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{shenHeYiJian}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="c60b673c-a5ec-493f-ba69-fb5378fa43e5" style="conStyle" x="80" y="260" width="594" height="60"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="html">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph lineSpacing="1_1_2" firstLineIndent="32" leftIndent="10" rightIndent="10" spacingBefore="5" spacingAfter="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beiZhu}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="4087b8c6-d35b-435a-9d79-e29b069aac31" style="conStyle" x="0" y="260" width="80" height="60"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[备注]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="a886a085-8d6d-4b07-b87a-a039aa84c9dd" style="conStyle" x="80" y="236" width="594" height="24"/>
+				<textElement textAlignment="Right">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(null==$F{shenHeRiQi})?"      年    月    日":$F{shenHeRiQi}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="ce2695f9-ebf3-42f8-8bf2-c58897f22c24" style="conStyle" x="388" y="206" width="96" height="30"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[负责人签名：]]></text>
+			</staticText>
+			<image isLazy="true">
+				<reportElement uuid="e2724551-4ebf-4b93-863e-da24a3433aad" x="484" y="206" width="80" height="30"/>
+				<imageExpression><![CDATA[$F{fuZeRenQianZhang}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="c60b673c-a5ec-493f-ba69-fb5378fa43e5" style="conStyle" x="80" y="0" width="594" height="90"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top" markup="html">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph lineSpacing="1_1_2" firstLineIndent="32" leftIndent="10" rightIndent="10" spacingBefore="5" spacingAfter="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{chuLiYiJian}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a886a085-8d6d-4b07-b87a-a039aa84c9dd" style="conStyle" x="80" y="126" width="594" height="30"/>
+				<textElement textAlignment="Right">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph leftIndent="10" rightIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(null==$F{chuLiRiQi})?"      年    月    日":$F{chuLiRiQi}]]></textFieldExpression>
+			</textField>
+			<image isLazy="true">
+				<reportElement uuid="78b16d0e-2e9e-482f-877f-ae6e989d895a" x="595" y="96" width="80" height="30"/>
+				<imageExpression><![CDATA[$F{tingZhengZhuChiRenQianZhang}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="ce2695f9-ebf3-42f8-8bf2-c58897f22c24" style="conStyle" x="463" y="96" width="131" height="30"/>
+				<textElement>
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<text><![CDATA[听证主持人签名：]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="4327031a-0c6d-488e-bfd6-ed7f0598ee93" x="0" y="-535" width="1" height="855"/>
+			</line>
+			<line>
+				<reportElement uuid="d2f67427-e12c-4584-9986-978833a1def3" x="674" y="-535" width="1" height="855"/>
+			</line>
+			<textField>
+				<reportElement uuid="1ad1346a-c705-4c9e-8e1b-0300f5e42420" style="conStyle" x="564" y="206" width="110" height="30"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+					<paragraph leftIndent="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{fuZeRenQianZhangDqr}==null || $F{fuZeRenQianZhangDqr}=="/")? "":("("+$F{fuZeRenQianZhangDqr}+"代)")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

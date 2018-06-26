@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.ustcsoft.jt.mapper.UserMapper">
+	<!-- 验证用户名密码-->
+	<select id="loadUserByUsername" parameterType="java.lang.String" resultType="com.ustcsoft.framework.vo.UserVO">
+    	SELECT
+		    U.USER_ID as userId,
+		    U.USER_NAME as userName,
+		    U.NAME as  name,
+		    USER_PWD as userPwd,
+		    U.LOGIN_NUM  as loginNum,
+		    U.LOGIN_IP  as loginIp,
+		    U.LOGIN_TIME as loginTime,
+		    U.ORG_ID as orgId,
+		    O.ORG_NAME as orgName,
+		    O.ORG_SIMPLENAME as orgSimpleName,
+		    O.BMBH as bmbh,
+		    U.DEPT_ID as deptId,
+		    u.ZHI_FA_ZHENG_HAO as zfzh,
+         	u.ZFRYBH as zfrybh,
+         	o.REG_CODE as regCode,
+         	o.org_lv as orgLv,
+         	O.HANG_YE_ID as hangYeId,
+         	O.DU_LI_ZHI_FA as duLiZhiFa,
+         	U.SHI_FOU_DA_YIN_GONG_ZHANG as isPrintGongZhang,
+         	U.login_type as loginType,
+         	O.CONTACT_TEL as orgLxdh,
+         	O.PEOPLE_GOVERNMENT AS popGoverment,
+         	O.CONTACT_PERSON AS contactPerson,
+         	U.SHEN_FEN_ZHENG_HAO AS UserShenFenZhengHao
+		FROM
+		    u_com00.M_USER U left outer join u_com00.M_ORG O on U.ORG_ID = O.ORG_ID
+    	where USER_NAME=#{loginName} 
+    		and U.login_type = 1
+	</select>
+	
+</mapper>

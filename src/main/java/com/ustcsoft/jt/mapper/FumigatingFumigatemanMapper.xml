@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ustcsoft.jt.mapper.FumigatingFumigatemanMapper" >
+
+
+  <insert id="batchAddFumigateman" parameterType="java.util.List">
+    insert into b_fumigating_fumigateman ( name, job,
+    credentials, bodystatus, division,
+    isoutworker, remarks, fumigating_id
+    )
+    values
+  <foreach collection='list' item='item1'>
+    <foreach collection='item1.fumigateman' item='item2' separator=','>
+      (#{item2.name,jdbcType=VARCHAR}, #{item2.job,jdbcType=VARCHAR},
+      #{item2.credentials,jdbcType=VARCHAR}, #{item2.bodystatus,jdbcType=VARCHAR}, #{item2.division,jdbcType=VARCHAR},
+      #{item2.isoutworker,jdbcType=VARCHAR}, #{item2.remarks,jdbcType=VARCHAR},
+      (select id from b_fumigating d where d.original_id= #{item1.original_id} and d.org_code= #{orgCode}
+      and d.ent_code= #{entCode}) )
+    </foreach>
+  </foreach>
+  </insert>
+</mapper>

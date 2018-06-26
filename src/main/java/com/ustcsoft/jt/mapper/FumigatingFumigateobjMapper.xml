@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ustcsoft.jt.mapper.FumigatingFumigateobjMapper" >
+
+
+
+  <insert id="batchAddFumigateobj" parameterType="java.util.List">
+    insert into b_fumigating_fumigateobj ( storehouse_gb_code, warehouse_gb_code,
+    grain_kind, kind_name, grain_count,
+    packingmode_code, pest, pest_density,
+    putin_time, fumigate_lasttiime, fumigate_plantime,
+    plandrug_count, plandrug_count_unit, remarks,
+    fumigating_id)
+    values
+    <foreach collection='list' item='item1'>
+      <foreach collection='item1.fumigateobj' item='item2' separator=','>
+        (#{item2.storehouse_gb_code,jdbcType=VARCHAR}, #{item2.warehouse_gb_code,jdbcType=VARCHAR},
+        #{item2.grain_kind,jdbcType=VARCHAR}, #{item2.kind_name,jdbcType=VARCHAR}, #{item2.grain_count,jdbcType=DECIMAL},
+        #{item2.packingmode_code,jdbcType=VARCHAR}, #{item2.pest,jdbcType=VARCHAR}, #{item2.pest_density,jdbcType=VARCHAR},
+        #{item2.putin_time,jdbcType=VARCHAR}, #{item2.fumigate_lasttiime,jdbcType=VARCHAR}, #{item2.fumigate_plantime,jdbcType=VARCHAR},
+        #{item2.plandrug_count,jdbcType=VARCHAR}, #{item2.plandrug_count_unit,jdbcType=VARCHAR}, #{item2.remarks,jdbcType=VARCHAR},
+        (select id from b_fumigating d where d.original_id= #{item1.original_id} and d.org_code= #{orgCode}
+        and d.ent_code= #{entCode}) )
+      </foreach>
+    </foreach>
+  </insert>
+
+
+</mapper>

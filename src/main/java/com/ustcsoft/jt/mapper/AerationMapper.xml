@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ustcsoft.jt.mapper.AerationMapper" >
+
+
+  <insert id="batchAdd" parameterType="java.util.List">
+    insert into b_aeration (storehouse, house,
+    allocation, liable_man, aeration_type_code,
+    aeration_mode_code, aeration_machine_code,
+    aeration_machine, aerationgoal_code, goods_kinds,
+    goods_height, blowing_intype, sum_electricity,
+    sum_blowing_rate, blowernet_drag, unit_blowing_rate,
+    max_grAdient_degree_begin, max_grAdient_degree_end,
+    max_grAdient_water_begin, max_grAdient_water_end,
+    degree, humidity, executive_date,
+    rdate_regdate, blowing_begintime, blowing_endtime,
+    original_id, remarks, org_code,
+    ent_code)
+    values
+    <foreach collection='list' item='item' separator=','>
+      ( #{item.storehouse,jdbcType=VARCHAR}, #{item.house,jdbcType=VARCHAR},
+      #{item.allocation,jdbcType=VARCHAR}, #{item.liable_man,jdbcType=VARCHAR}, #{item.aeration_type_code,jdbcType=VARCHAR},
+      #{item.aeration_mode_code,jdbcType=VARCHAR}, #{item.aeration_machine_code,jdbcType=VARCHAR},
+      #{item.aeration_machine,jdbcType=VARCHAR}, #{item.aerationgoal_code,jdbcType=VARCHAR}, #{item.goods_kinds,jdbcType=VARCHAR},
+      #{item.goods_height,jdbcType=VARCHAR}, #{item.blowing_intype,jdbcType=VARCHAR}, #{item.sum_electricity,jdbcType=VARCHAR},
+      #{item.sum_blowing_rate,jdbcType=VARCHAR}, #{item.blowernet_drag,jdbcType=VARCHAR}, #{item.unit_blowing_rate,jdbcType=VARCHAR},
+      #{item.max_grAdient_degree_begin,jdbcType=VARCHAR}, #{item.max_grAdient_degree_end,jdbcType=VARCHAR},
+      #{item.max_grAdient_water_begin,jdbcType=VARCHAR}, #{item.max_grAdient_water_end,jdbcType=VARCHAR},
+      #{item.degree,jdbcType=VARCHAR}, #{item.humidity,jdbcType=VARCHAR}, #{item.executiveDate,jdbcType=VARCHAR},
+      #{item.recordRegdate,jdbcType=VARCHAR}, #{item.blowingBegintime,jdbcType=VARCHAR}, #{item.blowingEndtime,jdbcType=VARCHAR},
+      #{item.original_id,jdbcType=VARCHAR}, #{item.remarks,jdbcType=VARCHAR}, #{orgCode,jdbcType=VARCHAR},
+      #{entCode,jdbcType=VARCHAR})
+    </foreach>
+    on DUPLICATE key UPDATE
+    storehouse=values(storehouse),
+    house=values(house),
+    allocation=values(allocation),
+    liable_man=values(liable_man),
+    aeration_type_code=values(aeration_type_code),
+    aeration_mode_code=values(aeration_mode_code),
+    aeration_machine_code=values(aeration_machine_code),
+    aeration_machine=values(aeration_machine),
+    aerationgoal_code=values(aerationgoal_code),
+    goods_kinds=values(goods_kinds),
+    goods_height=values(goods_height),
+    blowing_intype=values(blowing_intype),
+    sum_electricity=values(sum_electricity),
+    sum_blowing_rate=values(sum_blowing_rate),
+    blowernet_drag=values(blowernet_drag),
+    unit_blowing_rate=values(unit_blowing_rate),
+    max_grAdient_degree_begin=values(max_grAdient_degree_begin),
+    max_grAdient_degree_end=values(max_grAdient_degree_end),
+    max_grAdient_water_begin=values(max_grAdient_water_begin),
+    max_grAdient_water_end=values(max_grAdient_water_end),
+    degree=values(degree),
+    humidity=values(humidity),
+    executive_date=values(executive_date),
+    rdate_regdate=values(rdate_regdate),
+    blowing_begintime=values(blowing_begintime),
+    blowing_endtime=values(blowing_endtime),
+    original_id=values(original_id),
+    remarks=values(remarks),
+    org_code=values(org_code),
+    ent_code=values(ent_code)
+
+  </insert>
+
+</mapper>

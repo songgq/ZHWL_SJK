@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ustcsoft.jt.mapper.FumigatingMapper" >
+
+
+  <insert id="batchAdd" parameterType="java.util.List" >
+    insert into b_fumigating (application_date, liable_man,
+    telephone, drug_name, drug_kind,
+    expiry_date, receive_count, receive_units,
+    use_count, use_units, store_place,
+    receive_man, receive_time, fumigate_type,
+    type_name, residues_treated, warn_distance,
+    conserve_time, conserver, write_man,
+    write_tel, write_email, original_id,
+    email, org_code, ent_code,
+    conserve_advice, remarks)
+    values
+    <foreach collection='list' item='item' separator=','>
+      (#{item.application_date,jdbcType=VARCHAR}, #{item.liable_man,jdbcType=VARCHAR},
+      #{item.telephone,jdbcType=VARCHAR}, #{item.drug_name,jdbcType=VARCHAR}, #{item.drug_kind,jdbcType=VARCHAR},
+      #{item.expiry_date,jdbcType=VARCHAR}, #{item.receive_count,jdbcType=DECIMAL}, #{item.receive_units,jdbcType=VARCHAR},
+      #{item.use_count,jdbcType=DECIMAL}, #{item.use_units,jdbcType=VARCHAR}, #{item.store_place,jdbcType=VARCHAR},
+      #{item.receive_man,jdbcType=VARCHAR}, #{item.receive_time,jdbcType=VARCHAR}, #{item.fumigate_type,jdbcType=VARCHAR},
+      #{item.type_name,jdbcType=VARCHAR}, #{item.residues_treated,jdbcType=VARCHAR}, #{item.warn_distance,jdbcType=VARCHAR},
+      #{item.conserve_time,jdbcType=VARCHAR}, #{item.conserver,jdbcType=VARCHAR}, #{item.write_man,jdbcType=VARCHAR},
+      #{item.write_tel,jdbcType=VARCHAR}, #{item.write_email,jdbcType=VARCHAR}, #{item.original_id,jdbcType=VARCHAR},
+      #{item.email,jdbcType=VARCHAR}, #{orgCode,jdbcType=VARCHAR}, #{entCode,jdbcType=VARCHAR},
+      #{item.conserve_advice,jdbcType=LONGVARCHAR}, #{item.remarks,jdbcType=LONGVARCHAR})
+    </foreach>
+    on DUPLICATE key UPDATE
+    application_date=values(application_date),
+    liable_man=values(liable_man),
+    telephone=values(telephone),
+    drug_name=values(drug_name),
+    drug_kind=values(drug_kind),
+    expiry_date=values(expiry_date),
+    receive_count=values(receive_count),
+    receive_units=values(receive_units),
+    use_count=values(use_count),
+    use_units=values(use_units),
+    store_place=values(store_place),
+    receive_man=values(receive_man),
+    receive_time=values(receive_time),
+    fumigate_type=values(fumigate_type),
+    type_name=values(type_name),
+    residues_treated=values(residues_treated),
+    warn_distance=values(warn_distance),
+    conserve_time=values(conserve_time),
+    conserver=values(conserver),
+    write_man=values(write_man),
+    write_tel=values(write_tel),
+    write_email=values(write_email),
+    original_id=values(original_id),
+    email=values(email),
+    org_code=values(org_code),
+    ent_code=values(ent_code),
+    conserve_advice=values(conserve_advice),
+    remarks=values(remarks)
+
+  </insert>
+
+</mapper>

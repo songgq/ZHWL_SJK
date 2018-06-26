@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ustcsoft.jt.mapper.AppUserMapper">
+
+    <resultMap type="com.ustcsoft.jt.vo.AppUser" id="appUserMap">
+            <result property="id" column="id"/>
+            <result property="username" column="username"/>
+            <result property="password" column="password"/>
+            <result property="realname" column="realname"/>
+            <result property="status" column="status"/>
+            <result property="phonenum" column="phonenum"/>
+            <result property="dizhi" column="dizhi"/>
+            <result property="idcard" column="idcard"/>
+    </resultMap>
+
+    <sql id="columns">
+            id as id,
+            username as username,
+            password as password,
+            realname as realname,
+            status as status,
+            phonenum as phonenum,
+            dizhi as dizhi,
+            idcard as idcard
+    </sql>
+
+
+    <select id="loadAppUserByUsername" parameterType="string" resultType="com.ustcsoft.jt.vo.AppUser">
+        select
+        <include refid="columns"/>
+        from m_user where status = '1' and username = #{username}
+    </select>
+    <!--分页查询 默认没有条件-->
+    <select id="queryPage" parameterType="com.ustcsoft.jt.vo.AppUser" resultType="com.ustcsoft.jt.vo.AppUser">
+            select
+                <include refid="columns"/>
+            from m_user
+    </select>
+    
+    <!--新增-->
+    <insert id="insert" parameterType="com.ustcsoft.jt.vo.AppUser">
+        insert into m_user
+            (
+                id,
+                username,
+                password,
+                realname,
+                status,
+                phonenum,
+                dizhi,
+                idcard
+            ) values
+            (
+                #{id},
+                #{username},
+                #{password},
+                #{realname},
+                #{status},
+                #{phonenum},
+                #{dizhi},
+                #{idcard}
+            )
+    </insert>
+
+    <!--修改-->
+    <update id="update" parameterType="com.ustcsoft.jt.vo.AppUser">
+        update m_user
+            <set>
+                <if test='appUser.username != null and appUser.username != ""'>
+                 username = #{appUser.username},
+                </if>
+                <if test='appUser.password != null and appUser.password != ""'>
+                 password = #{appUser.password},
+                </if>
+                <if test='appUser.realname != null and appUser.realname != ""'>
+                 realname = #{appUser.realname},
+                </if>
+                <if test='appUser.status != null and appUser.status != ""'>
+                 status = #{appUser.status},
+                </if>
+                <if test='appUser.phonenum != null and appUser.phonenum != ""'>
+                 phonenum = #{appUser.phonenum},
+                </if>
+                <if test='appUser.dizhi != null and appUser.dizhi != ""'>
+                 dizhi = #{appUser.dizhi},
+                </if>
+                <if test='appUser.idcard != null and appUser.idcard != ""'>
+                 idcard = #{appUser.idcard}
+                </if>
+            </set>
+        where 1 = 1 and id = #{appUser.id}
+    </update>
+
+</mapper>

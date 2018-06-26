@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ustcsoft.jt.mapper.BZhiBiaoMapper">
+
+    <resultMap type="com.ustcsoft.jt.vo.BZhiBiao" id="bZhiBiaoMap">
+            <result property="id" column="id"/>
+            <result property="pid" column="pid"/>
+            <result property="value" column="value"/>
+            <result property="hangci" column="hangci"/>
+            <result property="status" column="status"/>
+            <result property="jibie" column="jibie"/>
+            <result property="creater" column="creater"/>
+            <result property="createtime" column="createTime"/>
+            <result property="updater" column="updater"/>
+            <result property="updatetime" column="updateTime"/>
+    </resultMap>
+
+    <sql id="columns">
+            id as id,
+            pid as pid,
+            value as value,
+            hangci as hangci,
+            status as status,
+            jibie as jibie,
+            creater as creater,
+            createTime as createtime,
+            updater as updater,
+            updateTime as updatetime
+    </sql>
+
+    <!--分页查询 默认没有条件-->
+    <select id="queryPage" parameterType="com.ustcsoft.jt.vo.BZhiBiao" resultType="com.ustcsoft.jt.vo.BZhiBiao">
+            select
+                <include refid="columns"/>
+            from b_zhi_biao where jibie != 0
+    </select>
+    
+    <!--新增-->
+    <insert id="insert" parameterType="com.ustcsoft.jt.vo.BZhiBiao">
+        insert into b_zhi_biao
+            (
+                id,
+                pid,
+                value,
+                hangci,
+                status,
+                jibie,
+                creater,
+                createTime,
+                updater,
+                updateTime
+            ) values
+            (
+                #{id},
+                #{pid},
+                #{value},
+                #{hangci},
+                #{status},
+                #{jibie},
+                #{creater},
+                #{createtime},
+                #{updater},
+                #{updatetime}
+            )
+    </insert>
+
+    <!--修改-->
+    <update id="update" parameterType="com.ustcsoft.jt.vo.BZhiBiao">
+        update b_zhi_biao
+            set
+                <if test='bZhiBiao.pid != null and bZhiBiao.pid != ""'>
+                 pid = #{bZhiBiao.pid},
+                </if>
+                <if test='bZhiBiao.value != null and bZhiBiao.value != ""'>
+                 value = #{bZhiBiao.value},
+                </if>
+                <if test='bZhiBiao.hangci != null and bZhiBiao.hangci != ""'>
+                 hangci = #{bZhiBiao.hangci},
+                </if>
+                <if test='bZhiBiao.status != null and bZhiBiao.status != ""'>
+                 status = #{bZhiBiao.status},
+                </if>
+                <if test='bZhiBiao.jibie != null and bZhiBiao.jibie != ""'>
+                 jibie = #{bZhiBiao.jibie},
+                </if>
+                <if test='bZhiBiao.creater != null and bZhiBiao.creater != ""'>
+                 creater = #{bZhiBiao.creater},
+                </if>
+                <if test='bZhiBiao.createtime != null and bZhiBiao.createtime != ""'>
+                 createTime = #{bZhiBiao.createtime},
+                </if>
+                <if test='bZhiBiao.updater != null and bZhiBiao.updater != ""'>
+                 updater = #{bZhiBiao.updater},
+                </if>
+                <if test='bZhiBiao.updatetime != null and bZhiBiao.updatetime != ""'>
+                 updateTime = #{bZhiBiao.updatetime}
+                </if>
+        where 1 = 1 and id = #{bZhiBiao.id}
+    </update>
+
+</mapper>

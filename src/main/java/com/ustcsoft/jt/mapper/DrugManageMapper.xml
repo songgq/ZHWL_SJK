@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ustcsoft.jt.mapper.DrugManageMapper" >
+
+  <insert id="batchAdd" parameterType="java.util.List" >
+    insert into b_drug_manage ( drug_code, drug_name,
+    drug_type, units, specifications,
+    buy_count, receive_count, surplus_count,
+    production_date, expire_date, control_man,
+    original_id, remarks, org_code,
+    ent_code,batch_id)
+    values
+    <foreach collection='list' item='item' separator=','>
+      (#{item.drug_code,jdbcType=VARCHAR}, #{item.drug_name,jdbcType=VARCHAR},
+      #{item.drug_type,jdbcType=VARCHAR}, #{item.units,jdbcType=VARCHAR}, #{item.specifications,jdbcType=VARCHAR},
+      #{item.buy_count,jdbcType=DECIMAL}, #{item.receive_count,jdbcType=DECIMAL}, #{item.surplus_count,jdbcType=DECIMAL},
+      #{item.production_date,jdbcType=VARCHAR}, #{item.expire_date,jdbcType=VARCHAR}, #{item.control_man,jdbcType=VARCHAR},
+      #{item.original_id,jdbcType=VARCHAR}, #{item.remarks,jdbcType=VARCHAR}, #{orgCode,jdbcType=VARCHAR},
+      #{entCode,jdbcType=VARCHAR},#{item.batch_id,jdbcType=VARCHAR})
+    </foreach>
+    on DUPLICATE key UPDATE
+    drug_code=values(drug_code),
+    drug_name=values(drug_name),
+    drug_type=values(drug_type),
+    units=values(units),
+    specifications=values(specifications),
+    buy_count=values(buy_count),
+    receive_count=values(receive_count),
+    surplus_count=values(surplus_count),
+    production_date=values(production_date),
+    expire_date=values(expire_date),
+    control_man=values(control_man),
+    original_id=values(original_id),
+    remarks=values(remarks),
+    org_code=values(org_code),
+    ent_code=values(ent_code),
+    batch_id=values(batch_id)
+  </insert>
+
+
+</mapper>

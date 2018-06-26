@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.ustcsoft.jt.mapper.SysRoleMapper">
+<!-- 查询用户是否具有超级管理员权限 -->
+	<select id="isCJGLY" parameterType="java.lang.String" resultType="java.lang.Long">
+	select count(1) from M_ROLE a 
+		left join M_USER_ROLE b 
+			on a.role_id = b.role_id 
+				where b.user_id= #{userId} and a.role_code = 'CJGLY'
+	</select>
+	
+	<!-- 查询用户是否具有主体单位管理员权限 -->
+	<select id="isZTDWGLY" parameterType="java.lang.String" resultType="java.lang.Long">
+	select count(1) from M_ROLE a 
+		left join M_USER_ROLE b 
+			on a.role_id = b.role_id 
+				where b.user_id= #{userId} and a.role_code = 'XTGLY'
+	</select>
+	
+	<!-- 功能说明:查询全部当前机构系统角色 -->
+	<select id="queryAllSysRoleInCurrentOrgPage" resultType="com.ustcsoft.jt.vo.SysRoleVO" parameterType="com.ustcsoft.jt.vo.SysRoleVO">
+	      SELECT 
+        DISTINCT(a.ROLE_ID) as roleId
+          , a.ROLE_NAME as roleName
+          , a.ROLE_CODE as roleCode
+          , a.REMARK as remark
+          , o.ORG_NAME as createrOrgName
+          , u.NAME as ceraterUserName
+          , a.T_ROLE as isSysRole
+          , a.ROLE_TYPE as roleType
+          , a.ROLE_HY as roleHy 
+        FROM 
+            M_ROLE a
+        left join u_com00.M_ORG o on o.ORG_ID = a.ORG_ID
+        left join u_com00.M_USER u on u.USER_ID =a.creater_ID
+        where 1=1
+	    <if test="role.roleName != null and role.roleName != ''">
+				and a.ROLE_NAME like #{role.roleName}
+		</if>
+		<if test="role.roleType != null and role.roleType != ''">
+				and a.ROLE_TYPE=#{role.roleType}
+		</if>
+		<if test="role.roleHy != null and role.roleHy != ''">
+				and a.ROLE_HY=#{role.roleHy}
+		</if>
+	</select>
+	
+	<!-- 功能说明:查询全部当前机构系统角色不包括超级系统角色 -->
+	<select id="queryAllSysRoleInCurrentOrgNoCJGLYPage" resultType="com.ustcsoft.jt.vo.SysRoleVO" parameterType="com.ustcsoft.jt.vo.SysRoleVO">
+	        SELECT 
+        DISTINCT(a.ROLE_ID) as roleId
+          , a.ROLE_NAME as roleName
+          , a.ROLE_CODE as roleCode
+          , a.REMARK as remark
+          , o.ORG_NAME as createrOrgName
+          , u.NAME as ceraterUserName
+          , a.T_ROLE as isSysRole
+          , a.ROLE_TYPE as roleType
+          , a.ROLE_HY as roleHy 
+        FROM 
+            M_ROLE a
+        left join u_com00.M_ORG o on o.ORG_ID = a.ORG_ID
+        left join u_com00.M_USER u on u.USER_ID = a.creater_ID
+        where (a.T_ROLE != '0' or a.T_ROLE is null OR a.T_ROLE ='')
+	    <if test="role.roleName != null and role.roleName != ''">
+				and a.ROLE_NAME like #{role.roleName}
+		</if>
+		<if test="role.roleType != null and role.roleType != ''">
+				and a.ROLE_TYPE=#{role.roleType}
+		</if>
+		<if test="role.roleHy != null and role.roleHy != ''">
+				and a.ROLE_HY=#{role.roleHy}
+		</if>
+	</select>
+	<!-- 功能说明:查询全部当前机构系统角色不包括超级系统角色和主体单位管理员角色 -->
+	<select id="queryAllSysRoleInCurrentOrgNoGLYPage" resultType="com.ustcsoft.jt.vo.SysRoleVO" parameterType="com.ustcsoft.jt.vo.SysRoleVO">
+	         SELECT 
+        DISTINCT(a.ROLE_ID) as roleId
+          , a.ROLE_NAME as roleName
+          , a.ROLE_CODE as roleCode
+          , a.REMARK as remark
+          , o.ORG_NAME as createrOrgName
+          , u.NAME as ceraterUserName
+          , a.T_ROLE as isSysRole
+          , a.ROLE_TYPE as roleType
+          , a.ROLE_HY as roleHy 
+        FROM 
+            M_ROLE a
+        left join u_com00.M_ORG o on o.ORG_ID = a.ORG_ID
+        left join u_com00.M_USER u on u.USER_ID = a.creater_ID
+        where (a.T_ROLE = '2' or a.T_ROLE is null OR a.T_ROLE ='')
+	    <if test="role.roleName != null and role.roleName != ''">
+				and a.ROLE_NAME like #{role.roleName}
+		</if>
+		<if test="role.roleType != null and role.roleType != ''">
+				and a.ROLE_TYPE=#{role.roleType}
+		</if>
+		<if test="role.roleHy != null and role.roleHy != ''">
+				and a.ROLE_HY=#{role.roleHy}
+		</if>
+	</select>
+	<!-- 删除角色-菜单 (仅当前用户拥有的菜单权限)-->
+	<delete id="deleteSysRoleMenuByMenuId"  parameterType="java.lang.String">
+		delete from  M_ROLE_MENU where 
+				           MENU_ID = #{node}
+	</delete>
+	
+	<!--  功能说明:获取m_role中最大的roleId-->
+	<select id="findMaxId" resultType="java.lang.Long" >
+		select 
+        max(ROLE_ID ) 
+      from   M_ROLE 
+	</select>
+	<!--  功能说明:新增系统角色-->
+	<insert id="insertSysRole"  parameterType="com.ustcsoft.jt.vo.SysRoleVO">
+		insert into M_role
+		(
+						ROLE_ID,
+						ROLE_NAME,		
+						REMARK,
+						ROLE_CODE,
+						ORG_ID,
+						creater_ID,
+						T_ROLE,
+				        ROLE_TYPE,	
+				        ROLE_HY
+		
+		) values 
+	     (
+					   #{roleId},
+					   #{roleName},
+					   #{remark},
+					   #{roleCode},
+					   #{createrOrgId},
+					   #{ceraterUserId},
+					   #{isSysRole},
+				       #{roleType},
+				       #{roleHy}
+						
+		
+		  )	
+	</insert>
+	
+	<!-- 更新系统角色-->
+	<update id="updateSysRole" parameterType="com.ustcsoft.jt.vo.SysRoleVO"> 
+  		update M_ROLE set 
+		            ROLE_NAME=#{roleName}, 
+		            ROLE_CODE=#{roleCode}, 
+		            REMARK=#{remark},
+		            T_ROLE=#{isSysRole},
+		            ROLE_TYPE=#{roleType},
+		            ROLE_HY=#{roleHy}
+	 	where
+				ROLE_ID = #{roleId}
+	</update>
+
+	<!-- 删除系统角色-->
+	<delete id="deleteSysRole"  parameterType="java.lang.String">
+		delete from  M_ROLE where 
+				           ROLE_ID = #{roleId}
+	</delete>
+	
+	<!-- 系统管理员，不论何时都能够看到所有权限 -->
+	<select id="selectSysMenusAndObj4RoleAdmin" resultType="com.ustcsoft.jt.vo.SysMenuVO" parameterType="com.ustcsoft.jt.vo.SysMenuVO">
+		SELECT 
+			DISTINCT(a.MENU_ID) as menuId
+		  , a.MENU_NAME as menuName
+		  , a.PARENT_ID as parentId
+		  , case when role_id is null then 0 else 1  end as checked
+		  ,'SysMenu' as type
+		FROM 
+		    M_MENU a	LEFT JOIN M_ROLE_MENU b
+		ON
+			a.MENU_ID=b.MENU_ID and b.role_id=#{roleId}
+	</select>
+	
+	
+	
+	
+	
+	<select id="selectSysMenusAndObj4Role" resultType="com.ustcsoft.jt.vo.SysMenuVO" parameterType="com.ustcsoft.jt.vo.SysMenuVO">
+		SELECT 
+			DISTINCT(a.MENU_ID) as menuId
+		  , a.MENU_NAME as menuName
+		  , a.PARENT_ID as parentId
+		  , decode(role_id,null,0,1) as flag
+		  ,'SysMenu' as type
+		FROM 
+		    M_MENU a	LEFT JOIN M_ROLE_MENU b
+		ON
+			a.MENU_ID=b.MENU_ID and b.role_id=#{roleId}
+		inner join (select mrm.MENU_ID
+			        from M_USER_ROLE mur
+			        left join M_ROLE_MENU mrm ON mrm.ROLE_ID = mur.ROLE_ID
+			        where mur.USER_ID=#{userId})  t on t.MENU_ID = a.MENU_ID
+	</select>
+	
+	
+	
+	
+	<!-- 删除角色-菜单-->
+	<delete id="deleteSysRoleMenuByRoleId"  parameterType="java.lang.String">
+		delete from  M_ROLE_MENU where 
+				           ROLE_ID = #{roleId} 
+	</delete>
+	
+	
+	<!-- 删除角色-菜单 (仅当前用户拥有的菜单权限)-->
+	<delete id="deleteSysRoleMenuByRoleIdAndUserId"  parameterType="java.lang.String">
+		delete from  M_ROLE_MENU 
+		where ROLE_ID = #{opRole.roleId}
+		and	  MENU_ID in (
+						  select  a.id from(
+		                    select mrm.MENU_ID as id
+					        from M_USER_ROLE mur
+					        left join M_ROLE_MENU mrm ON mrm.ROLE_ID = mur.ROLE_ID
+					        where mur.USER_ID=#{opRole.operaterId}
+					        )a
+					        ) 
+	</delete>
+	
+	
+	
+	<!--  功能说明:新增系统角色-菜单-->
+	<insert id="insertSysRoleMenu"  parameterType="com.ustcsoft.jt.vo.SysRoleMenuVO">
+		insert into M_role_menu
+		(ROLE_ID,MENU_ID)
+		 values 
+		(  #{roleMenu.roleId}, #{roleMenu.menuId})	
+	</insert>
+	
+	
+	<!-- 查询用户是否具有管理员权限 -->
+	<select id="isAdmin" parameterType="java.lang.String" resultType="java.lang.Long">
+	select count(*) from M_USER_ROLE where  USER_ID = #{userId} and ROLE_ID = '1000000000000001'
+	</select>
+	
+	
+	
+	<!-- 功能说明:新建用户角色 -->
+	<insert id="insertSysUserRole" parameterType="com.ustcsoft.jt.vo.SysUserRoleVO">
+		insert into 
+			  M_USER_ROLE 
+				(
+					USER_ID,
+					ROLE_ID
+		       ) values 
+		   		(
+		   			#{userRole.userId},
+		   			#{userRole.roleId}
+  	            )	
+  	</insert>
+  	<!-- 功能说明:删除用户所有角色 -->
+  	<delete id="deleteSysUserRolebyUserId"  parameterType="java.lang.String">   
+   		delete from  
+   				M_USER_ROLE 
+   		where 
+	           USER_ID = #{userId} 
+   	</delete>
+   	
+   	
+   	<!-- 删除操作者（主体管理员）所能删除的所有角色 -->
+   	<delete id="deleteSysUserRolebyUserIdNotCJGLY" parameterType="java.lang.String">   
+   		delete from 
+   			M_USER_ROLE  			
+   		where USER_ID = #{userId} 
+   		and ROLE_ID in 
+   		(
+   		  select a.id from
+   		(select mur.role_id as id from M_USER_ROLE mur left join M_ROLE mr on mur.role_id = mr.role_id 
+   			where mur.USER_ID =#{userId}  and ( mr.t_role != '0' or mr.t_role is null OR  mr.t_role=''))a
+   			
+   			)
+   	</delete>	
+   	
+   	<!-- 删除操作者（非主体单位管理员）所能删除的所有角色  -->
+   	<delete id="deleteSysUserRolebyUserIdNotGLY" parameterType="java.lang.String">   
+   		delete from 
+   			M_USER_ROLE  			
+   		where USER_ID =#{userId}
+   		and ROLE_ID in(
+   		select a.id  from
+   		 (select mur.role_id as  id from M_USER_ROLE mur left join M_ROLE mr on mur.role_id = mr.role_id 
+   			where mur.USER_ID = #{userId} and ( mr.t_role = '2' or mr.t_role is null OR  mr.t_role=''))a
+   			)
+   	</delete>
+</mapper>

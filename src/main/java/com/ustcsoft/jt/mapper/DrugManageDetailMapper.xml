@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ustcsoft.jt.mapper.DrugManageDetailMapper">
+
+    <insert id="batchAddDetail" parameterType="java.util.List">
+        insert into b_drug_manage_detail (business_type, business_typename,
+        business_count, balance_count, emptyhanding_count,
+        business_man, business_time, business_cause,
+        remarks, production_date, expire_date,
+        drug_id, control_man, use_man,drug_manage_id
+        )
+        values
+        <foreach collection='list' item='item1'>
+            <foreach collection='item1.detail' item='item2' separator=','>
+                (#{item2.business_type,jdbcType=INTEGER}, #{item2.business_typename,jdbcType=VARCHAR},
+                #{item2.business_count,jdbcType=DECIMAL}, #{item2.balance_count,jdbcType=DECIMAL},
+                #{item2.emptyhanding_count,jdbcType=DECIMAL},
+                #{item2.business_man,jdbcType=VARCHAR}, #{item2.business_time,jdbcType=VARCHAR},
+                #{item2.business_cause,jdbcType=VARCHAR},
+                #{item2.remarks,jdbcType=VARCHAR}, #{item2.production_date,jdbcType=VARCHAR},
+                #{item2.expire_date,jdbcType=VARCHAR},
+                #{item2.drug_id,jdbcType=VARCHAR}, #{item2.control_man,jdbcType=VARCHAR}, #{item2.use_man,jdbcType=VARCHAR},
+                (select id from b_drug_manage d where d.original_id= #{item1.original_id} and d.org_code= #{orgCode}
+                 and d.ent_code= #{entCode}) )
+            </foreach>
+        </foreach>
+        <!--管理详情只增不删
+        on DUPLICATE key UPDATE
+        business_type=values(business_type),
+        business_typename=values(business_typename),
+        business_count=values(business_count),
+        balance_count=values(balance_count),
+        emptyhanding_count=values(emptyhanding_count),
+        business_man=values(business_man),
+        business_time=values(business_time),
+        business_cause=values(business_cause),
+        remarks=values(remarks),
+        production_date=values(production_date),
+        expire_date=values(expire_date),
+        drug_id=values(drug_id),
+        control_man=values(control_man),
+        use_man=values(use_man),
+        drug_manage_id=values(drug_manage_id)-->
+    </insert>
+
+</mapper>

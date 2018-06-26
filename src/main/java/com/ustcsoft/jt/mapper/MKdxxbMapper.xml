@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ustcsoft.jt.mapper.MKdxxbMapper">
+
+    <resultMap type="com.ustcsoft.jt.vo.MKdxxb" id="mKdxxbMap">
+            <result property="id" column="id"/>
+            <result property="kdmc" column="kdmc"/>
+            <result property="kdjj" column="kdjj"/>
+            <result property="lkdz" column="lkdz"/>
+            <result property="szs" column="szs"/>
+            <result property="szx" column="szx"/>
+            <result property="tel" column="tel"/>
+    </resultMap>
+
+    <sql id="columns">
+            id as id,
+            kdmc as kdmc,
+            kdjj as kdjj,
+            lkdz as lkdz,
+            szs as szs,
+            szx as szx,
+            tel as tel
+    </sql>
+
+    <!--根据区划获取库点信息 -->
+    <select id="getKdxxByAreaId" parameterType="string" resultMap="mKdxxbMap">
+        SELECT * FROM u_com00.m_kdxxb kd WHERE kd.szx = #{areaId}
+    </select>
+
+    <!--分页查询 默认没有条件-->
+    <select id="queryPage" parameterType="com.ustcsoft.jt.vo.MKdxxb" resultType="com.ustcsoft.jt.vo.MKdxxb">
+            select
+                <include refid="columns"/>
+            from m_kdxxb
+    </select>
+    
+    <!--新增-->
+    <insert id="insert" parameterType="com.ustcsoft.jt.vo.MKdxxb">
+        insert into m_kdxxb
+            (
+                id,
+                kdmc,
+                kdjj,
+                lkdz,
+                szs,
+                szx,
+                tel
+            ) values
+            (
+                #{id},
+                #{kdmc},
+                #{kdjj},
+                #{lkdz},
+                #{szs},
+                #{szx},
+                #{tel}
+            )
+    </insert>
+
+    <!--修改-->
+    <update id="update" parameterType="com.ustcsoft.jt.vo.MKdxxb">
+        update m_kdxxb
+            <set>
+                <if test='mKdxxb.kdmc != null and mKdxxb.kdmc != ""'>
+                 kdmc = #{mKdxxb.kdmc},
+                </if>
+                <if test='mKdxxb.kdjj != null and mKdxxb.kdjj != ""'>
+                 kdjj = #{mKdxxb.kdjj},
+                </if>
+                <if test='mKdxxb.lkdz != null and mKdxxb.lkdz != ""'>
+                 lkdz = #{mKdxxb.lkdz},
+                </if>
+                <if test='mKdxxb.szs != null and mKdxxb.szs != ""'>
+                 szs = #{mKdxxb.szs},
+                </if>
+                <if test='mKdxxb.szx != null and mKdxxb.szx != ""'>
+                 szx = #{mKdxxb.szx},
+                </if>
+                <if test='mKdxxb.tel != null and mKdxxb.tel != ""'>
+                 tel = #{mKdxxb.tel}
+                </if>
+            </set>
+        where 1 = 1 and id = #{mKdxxb.id}
+    </update>
+
+    <select id="findkd" parameterType="map" resultType="com.ustcsoft.jt.vo.MKdxxb">
+        SELECT * FROM u_com00.m_kdxxb kd where kd.lng is not null and kd.lat is not null
+        and kd.lng != '' and  kd.lat != ''
+    </select>
+
+    <select id="findKslkd" parameterType="map" resultType="com.ustcsoft.jt.vo.MKdxxb">
+        SELECT
+        kd.id,
+        kd.lkdz,
+        kd.lng,
+        kd.lat,
+        kd.tel,
+        kd.kdmc
+        FROM
+        u_01_tkyw.b_gxjdb_zy gx
+        INNER JOIN u_com00.m_kdxxb kd ON gx.kdid = kd.id
+
+        where 1 = 1
+        <if test='parms.type == "2"'>
+            and gx.ywcsl &lt; gx.gxsl
+        </if>
+        <if test='parms.type == "3"'>
+            and gx.ywcsl &gt;= gx.gxsl
+        </if>
+
+            AND kd.lng IS NOT NULL
+            AND kd.lat IS NOT NULL
+            AND kd.lng != ''
+            AND kd.lat != ''
+    </select>
+</mapper>

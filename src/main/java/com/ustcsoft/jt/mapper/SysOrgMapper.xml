@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.ustcsoft.jt.mapper.SysOrgMapper">
+	<!-- 检索组织树(业务)-->
+	<select id="searchOrgTree"  resultType="com.ustcsoft.jt.vo.SysOrgVO" parameterType="java.lang.String">
+		SELECT distinct
+		    O.ORG_ID orgId,
+		    O.ORG_NAME orgName,
+		    O.ORG_CODE orgCode,
+		    O.ORG_SIMPLENAME orgSimpleName,
+		    O.REMARK remark,
+			O.MANAGER manager,
+			O.CONTACT_PERSON contactPerson,
+			O.CONTACT_TEL contactTel,
+			O.EMAIL email,
+			O.WANG_ZHI website,
+			O.DI_ZHI address,
+			O.STATUS status,
+			O.ORG_LV orgLv,
+			O.REG_CODE regCode,
+		    O.BMBH bmbh,
+		    O.HANG_YE_ID tradeType,
+			O.DU_LI_ZHI_FA duLiZhiFa,
+			O.JIAN_CE_ZHAN_HAO jianCeZhanHao,
+			O.PAI_XU paiXu
+		FROM
+			 u_com00.M_ORG O 
+			WHERE O.ORG_ID like #{searchId}
+		ORDER BY O.PAI_XU ASC,O.ORG_LV
+	</select>
+	
+	<!--检索组织列表  按业务 -->
+	<select id="searchOrgListPage" parameterType="com.ustcsoft.jt.vo.SysOrgVO" resultType="com.ustcsoft.jt.vo.SysOrgVO">
+		SELECT distinct
+		    O.ORG_ID orgId,
+		    O.ORG_NAME orgName,
+		    O.ORG_CODE orgCode,
+		    O.ORG_SIMPLENAME orgSimpleName,
+		    O.REMARK remark,
+			O.MANAGER manager,
+			O.CONTACT_PERSON contactPerson,
+			O.CONTACT_TEL contactTel,
+			O.EMAIL email,
+			O.WANG_ZHI website,
+			O.DI_ZHI address,
+			O.STATUS status,
+			O.ORG_LV orgLv,
+			O.REG_CODE regCode,
+		    O.BMBH bmbh,
+		    O.HANG_YE_ID tradeType,
+			O.DU_LI_ZHI_FA duLiZhiFa,
+			O.JIAN_CE_ZHAN_HAO jianCeZhanHao,
+			O.PAI_XU paiXu
+            FROM 
+		   u_com00.M_ORG O 	
+			WHERE   1=1
+			<if test="org.orgName != null and org.orgName != ''">
+			and	O.ORG_NAME like #{org.orgName}
+		    </if>
+			<if test="org.searchId != null and org.searchId != ''">
+			and	O.ORG_ID like #{org.searchId}
+		    </if>
+		ORDER BY O.PAI_XU ASC,O.ORG_LV
+	</select>
+	
+	<!--检索组织列表  (不带page)-->
+	<select id="searchOrg" parameterType="com.ustcsoft.jt.vo.SysOrgVO" resultType="com.ustcsoft.jt.vo.SysOrgVO">
+		SELECT distinct
+		    O.ORG_ID orgId,
+			O.BUSINESS_ID businessId,
+			O.MANAGER_ID managerId,
+		    O.ORG_NAME orgName,
+		    O.ORG_CODE orgCode,
+		    O.ORG_SIMPLENAME orgSimpleName,
+		    O.REMARK remark,
+			O.MANAGER manager,
+			O.CONTACT_PERSON contactPerson,
+			O.CONTACT_TEL contactTel,
+			O.EMAIL email,
+			O.WANG_ZHI website,
+			O.DI_ZHI address,
+			O.STATUS status,
+			O.ORG_LV orgLv,
+			O.PARENT_BUSINESS_ID parentBusinessId,
+			O.REG_CODE regCode,
+			X.XING_ZHENG_QU_HUA_MING_CHENG regName,
+		    O.ORG_ID id,
+		    O.ORG_NAME text,
+		    O.BMBH bmbh,
+		    O.HANG_YE_ID tradeType,
+			O.DU_LI_ZHI_FA duLiZhiFa,
+			O.JIAN_CE_ZHAN_HAO jianCeZhanHao,
+			O.PAI_XU paiXu
+            FROM 
+		   u_com00.M_ORG O 	
+			left join m_xzqhdm X on O.REG_CODE = X.XING_ZHENG_QU_HUA_ID
+			WHERE   1=1
+			<if test="org.businessId != null and org.businessId != ''">
+			and	O.BUSINESS_ID = #{org.businessId}
+		    </if>
+		 	
+		ORDER BY O.PAI_XU ASC,O.ORG_LV
+	</select>
+	<!--根据BusinessId获取此父节点上最大的Id-->
+	<select id="findMaxId"  parameterType="java.lang.String" resultType="java.lang.String" >
+	select  max(O.ORG_ID) 
+	       FROM 
+		   u_com00.M_ORG O 	
+		   where 
+		   O.ORG_ID like #{searchId}
+	</select>
+	
+	<!--添加组织-->
+	<insert id="addOrgInfo" parameterType="com.ustcsoft.jt.vo.SysOrgVO">
+		insert into u_com00.M_ORG (
+			ORG_ID,
+			ORG_NAME,
+			ORG_CODE,
+		    ORG_SIMPLENAME,
+			REMARK,
+			MANAGER,
+			CONTACT_PERSON,
+			CONTACT_TEL,
+			EMAIL,
+			WANG_ZHI,
+			DI_ZHI,
+			JI_GOU_ZHI_NENG,
+			STATUS,
+			ORG_LV,
+			PEOPLE_GOVERNMENT,
+			REG_CODE,
+			BMBH,
+			YOU_BIAN,
+			HANG_YE_ID,
+			DU_LI_ZHI_FA,
+			JIAN_CE_ZHAN_HAO,
+			SHI_SHI_ZHU_TI_BIAN_HAO
+		)values(
+			#{org.orgId},
+			#{org.orgName},
+			#{org.orgCode},
+			#{org.orgSimpleName},
+			#{org.remark},
+			#{org.manager},
+			#{org.contactPerson},
+			#{org.contactTel},
+			#{org.email},
+			#{org.website},
+			#{org.address},
+			#{org.func},
+			#{org.status},
+			#{org.orgLv},
+			#{org.government},
+			#{org.regCode},
+			#{org.bmbh},
+			#{org.youBian},
+			#{org.tradeType},
+			#{org.duLiZhiFa},
+			#{org.jianCeZhanHao},
+			#{org.bh}
+		)
+	</insert>
+	
+	<!--更新组织-->
+	<update id="updateOrg" parameterType="com.ustcsoft.jt.vo.SysOrgVO">
+		update u_com00.M_ORG set
+			ORG_NAME = #{org.orgName},
+			ORG_CODE = #{org.orgCode},
+			ORG_SIMPLENAME = #{org.orgSimpleName},
+			REMARK = #{org.remark},
+			MANAGER = #{org.manager},
+			CONTACT_PERSON = #{org.contactPerson},
+			CONTACT_TEL = #{org.contactTel},
+			EMAIL = #{org.email},
+			WANG_ZHI = #{org.website},
+			DI_ZHI = #{org.address},
+			JI_GOU_ZHI_NENG = #{org.func},
+			STATUS = #{org.status},
+			ORG_LV = #{org.orgLv},
+			PEOPLE_GOVERNMENT =#{org.government},
+			REG_CODE=#{org.regCode},
+			YOU_BIAN = #{org.youBian},
+			HANG_YE_ID = #{org.tradeType},
+			DU_LI_ZHI_FA = #{org.duLiZhiFa},
+			JIAN_CE_ZHAN_HAO = #{org.jianCeZhanHao}
+		where
+			ORG_ID = #{org.orgId}
+	</update>
+	
+	<!--根据行政执法系统中businessId删除组织关系信息-->
+	<delete id="deleteOrg" parameterType="java.lang.String">
+		delete from u_com00.M_ORG  where
+			ORG_ID like #{businessId}
+	</delete>
+
+	<!--获取市级粮食局-->
+	<select id="getCityOrgs" resultType="com.ustcsoft.jt.vo.SysOrgVO">
+		SELECT
+			org.ORG_ID,
+			org.ORG_NAME,
+			org.PARENT_ID,
+			org.AREA_ID,
+			org.ORG_LV
+		FROM
+			u_com00.m_org org
+		LEFT JOIN u_com00.m_xzqhdm qh ON org.AREA_ID = qh.XING_ZHENG_QU_HUA_DAI_MA
+		WHERE
+			org.AREA_ID LIKE '34%'
+		AND qh.XING_ZHENG_QU_HUA_DENG_JI = '2'
+	</select>
+
+	<!--获取区划下的粮食局-->
+	<select id="getOrgByAreaId" parameterType="string" resultType="com.ustcsoft.jt.vo.SysOrgVO">
+
+		SELECT
+			org.ORG_ID,
+			org.ORG_NAME,
+			org.PARENT_ID,
+			org.AREA_ID,
+			org.ORG_LV
+		FROM
+			u_com00.m_org org
+
+		WHERE
+			org.AREA_ID = #{0}
+	</select>
+
+	<select id="getNearOrgs" resultType="com.ustcsoft.jt.vo.SysOrgVO">
+		SELECT
+			org.ORG_ID,
+			org.DI_ZHI,
+			org.LNG,
+			org.LAT,
+			org.CONTACT_TEL,
+			org.ORG_NAME,
+			org.LNG,
+			org.LAT
+		FROM
+			m_org org
+			where 1 = 1
+			AND org.lng IS NOT NULL
+            AND org.lat IS NOT NULL
+            AND org.lng != ''
+        	AND org.lat != ''
+	</select>
+</mapper>

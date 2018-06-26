@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ustcsoft.jt.mapper.BYuyueMapper">
+
+    <resultMap type="com.ustcsoft.jt.vo.BYuyue" id="bYuyueMap">
+            <result property="id" column="id"/>
+            <result property="gxid" column="gxId"/>
+            <result property="lspz" column="lspz"/>
+            <result property="yysj" column="yysj"/>
+            <result property="yysl" column="yysl"/>
+            <result property="sjrkl" column="sjrkl"/>
+            <result property="status" column="status"/>
+            <result property="mlrxm" column="mlrxm"/>
+            <result property="mlrsjh" column="mlrsjh"/>
+            <result property="cyrxm" column="cyrxm"/>
+            <result property="cyrsjh" column="cyrsjh"/>
+            <result property="cyrsfz" column="cyrsfz"/>
+            <result property="ylcph" column="ylcph"/>
+            <result property="creater" column="creater"/>
+            <result property="createTime" column="createTime"/>
+            <result property="updater" column="updater"/>
+            <result property="updateTime" column="updateTime"/>
+    </resultMap>
+
+    <sql id="columns">
+            id as id,
+            gxId as gxid,
+            lspz as lspz,
+            yysj as yysj,
+            yysl as yysl,
+            sjrkl as sjrkl,
+            status as status,
+            mlrxm as mlrxm,
+            mlrsjh as mlrsjh,
+            cyrxm as cyrxm,
+            cyrsjh as cyrsjh,
+            cyrsfz as cyrsfz,
+            ylcph as ylcph,
+            creater as creater,
+            createTime as createTime,
+            updater as updater,
+            updateTime as updateTime
+    </sql>
+
+
+    <select id="queryYuYueResult" parameterType="string" resultType="com.ustcsoft.jt.vo.BYuyue">
+
+    </select>
+
+    <!--分页查询 默认没有条件-->
+    <select id="queryPage" parameterType="com.ustcsoft.jt.vo.BYuyue" resultType="com.ustcsoft.jt.vo.BYuyue">
+            select
+                <include refid="columns"/>
+            from b_yuyue
+    </select>
+
+    <!--新增-->
+    <insert id="insert" parameterType="com.ustcsoft.jt.vo.BYuyue">
+        insert into b_yuyue
+            (
+                id,
+                gxId,
+                lspz,
+                yysj,
+                yysl,
+                sjrkl,
+                status,
+                mlrxm,
+                mlrsjh,
+                cyrxm,
+                cyrsjh,
+                cyrsfz,
+                ylcph,
+                creater,
+                createTime,
+                updater,
+                updateTime
+            ) values
+            (
+                #{id},
+                #{gxid},
+                #{lspz},
+                #{yysj},
+                #{yysl},
+                #{sjrkl},
+                #{status},
+                #{mlrxm},
+                #{mlrsjh},
+                #{cyrxm},
+                #{cyrsjh},
+                #{cyrsfz},
+                #{ylcph},
+                #{creater},
+                #{createTime},
+                #{updater},
+                #{updateTime}
+            )
+    </insert>
+
+    <!--修改-->
+    <update id="update" parameterType="com.ustcsoft.jt.vo.BYuyue">
+        update b_yuyue
+            <set>
+                <if test='bYuyue.gxid != null and bYuyue.gxid != ""'>
+                 gxId = #{bYuyue.gxid},
+                </if>
+                <if test='bYuyue.lspz != null and bYuyue.lspz != ""'>
+                 lspz = #{bYuyue.lspz},
+                </if>
+                <if test='bYuyue.yysj != null and bYuyue.yysj != ""'>
+                 yysj = #{bYuyue.yysj},
+                </if>
+                <if test='bYuyue.yysl != null and bYuyue.yysl != ""'>
+                 yysl = #{bYuyue.yysl},
+                </if>
+                <if test='bYuyue.sjrkl != null and bYuyue.sjrkl != ""'>
+                 sjrkl = #{bYuyue.sjrkl},
+                </if>
+                <if test='bYuyue.status != null and bYuyue.status != ""'>
+                 status = #{bYuyue.status},
+                </if>
+                <if test='bYuyue.mlrxm != null and bYuyue.mlrxm != ""'>
+                 mlrxm = #{bYuyue.mlrxm},
+                </if>
+                <if test='bYuyue.mlrsjh != null and bYuyue.mlrsjh != ""'>
+                 mlrsjh = #{bYuyue.mlrsjh},
+                </if>
+                <if test='bYuyue.cyrxm != null and bYuyue.cyrxm != ""'>
+                 cyrxm = #{bYuyue.cyrxm},
+                </if>
+                <if test='bYuyue.cyrsjh != null and bYuyue.cyrsjh != ""'>
+                 cyrsjh = #{bYuyue.cyrsjh},
+                </if>
+                <if test='bYuyue.cyrsfz != null and bYuyue.cyrsfz != ""'>
+                 cyrsfz = #{bYuyue.cyrsfz},
+                </if>
+                <if test='bYuyue.ylcph != null and bYuyue.ylcph != ""'>
+                 ylcph = #{bYuyue.ylcph},
+                </if>
+                <if test='bYuyue.creater != null and bYuyue.creater != ""'>
+                 creater = #{bYuyue.creater},
+                </if>
+                <if test='bYuyue.createTime != null and bYuyue.createTime != ""'>
+                 createTime = #{bYuyue.createTime},
+                </if>
+                <if test='bYuyue.updater != null and bYuyue.updater != ""'>
+                 updater = #{bYuyue.updater},
+                </if>
+                <if test='bYuyue.updateTime != null and bYuyue.updateTime != ""'>
+                 updateTime = #{bYuyue.updateTime}
+                </if>
+            </set>
+        where 1 = 1 and id = #{bYuyue.id}
+    </update>
+
+</mapper>

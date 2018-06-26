@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.ustcsoft.jt.mapper.SysMenuMapper">
+	<resultMap id="SysMenu" type="com.ustcsoft.jt.vo.SysMenuVO">
+		<result property="menuIco" column="MENU_ICO" />
+		<result property="parentId" column="PARENT_ID" />
+		<result property="isPop" column="IS_POP" />
+		<result property="isLeaf" column="IS_LEAF" />
+		<result property="helpUrl" column="HELP_URL" />
+		<result property="menuUrl" column="MENU_URL" />
+		<result property="busiCode" column="BUSI_CODE" />
+		<result property="menuName" column="MENU_NAME" />
+		<result property="menuId" column="MENU_ID" />
+		<result property="menuSort" column="MENU_SORT" />
+		<result property="delFlg" column="DEL_FLG" />
+	</resultMap>
+	
+	<resultMap id="SysObj" type="com.ustcsoft.jt.vo.SysObjVO">
+		<result property="objId" column="OBJ_ID" />
+		<result property="objCode" column="OBJ_CODE" />
+		<result property="busiCode" column="BUSI_CODE" />
+		<result property="menuId" column="MENU_ID" />
+		<result property="objName" column="OBJ_NAME" />
+	</resultMap>
+	<!--  功能说明:根据用户拥有权限过滤菜单功能   -->
+	<select id="selectPurviewMenuAll" resultMap="SysMenu" parameterType="java.lang.Long">
+		SELECT
+			DISTINCT(a.MENU_ID)
+		  , a.PARENT_ID
+		  , a.IS_POP
+		  , a.IS_LEAF
+		  , a.HELP_URL
+		  , a.MENU_URL
+		  , a.BUSI_CODE
+		  , a.MENU_NAME
+		  , a.MENU_ICO
+		  , a.MENU_SORT
+		  , a.DEL_FLG
+		  FROM M_USER_ROLE c ,	 M_ROLE_MENU b,	 M_MENU a
+    	 WHERE user_id   =#{userId} AND
+    	 a.DEL_FLG = '0'  AND a.MENU_ID = b.MENU_ID AND
+    	  c.role_id = b.ROLE_ID
+ 	ORDER BY a.PARENT_ID ASC,a.MENU_SORT
+
+	</select>
+	<!--  功能说明:根据ParentId查询系统菜单-->
+	<select id="selectSysMenusByParentId" resultMap="SysMenu" parameterType="java.lang.String">
+		SELECT 
+			DISTINCT(a.MENU_ID)
+		  , a.PARENT_ID
+		  , a.IS_POP
+		  , a.IS_LEAF
+		  , a.HELP_URL
+		  , a.MENU_URL
+		  , a.BUSI_CODE
+		  , a.MENU_NAME
+		  , a.MENU_ICO
+		  , a.MENU_SORT
+		  , a.DEL_FLG
+		FROM 
+		    M_MENU a		  
+		WHERE
+			 a.PARENT_ID=#{node}
+		ORDER BY a.MENU_SORT
+	</select>
+	
+	<!--  功能说明:查询菜单详情  -->
+	<select id="querySysMenu" resultMap="SysMenu"  parameterType="java.lang.String">
+		select 
+           MENU_ID
+		  , PARENT_ID
+		  , IS_POP
+		  , IS_LEAF
+		  , HELP_URL
+		  , MENU_URL
+		  , BUSI_CODE
+		  , MENU_NAME
+		  , MENU_ICO
+		  , MENU_SORT
+		  , DEL_FLG
+   	  from M_MENU where
+			MENU_ID =  #{node}
+	</select>
+	
+	<!--  功能说明:根据ParentId查询页面对象-->
+	<select id="selectSysObjsByParentId" resultMap="SysObj" parameterType="java.lang.String">
+		SELECT 
+			DISTINCT(a.OBJ_ID)
+		  , a.OBJ_CODE
+		  , a.BUSI_CODE
+		  , a.OBJ_NAME
+		  , a.MENU_ID
+		FROM 
+		    M_OBJ a		  
+		WHERE
+			 a.MENU_ID=#{node}
+	</select>
+	
+	<!-- 查询最大的Menu—_id-->
+	<select id="selectMaxId" resultType="java.lang.String" parameterType="java.lang.String">
+		select 
+        max(menu_id ) 
+      from   M_MENU where menu_id like #{startmenuId}
+	</select>
+	
+	<!-- 新增系统菜单-->
+	<insert id="insertSysMenu" parameterType="com.ustcsoft.jt.vo.SysMenuVO">
+			insert into M_MENU 
+			(MENU_ID,PARENT_ID, IS_LEAF , IS_POP, HELP_URL, MENU_URL,
+			BUSI_CODE, MENU_NAME, MENU_ICO,DEL_FLG)
+			
+		 values 
+		(
+		#{sysMenuVO.menuId}, #{sysMenuVO.parentId},#{sysMenuVO.isLeaf}, #{sysMenuVO.isPop},#{sysMenuVO.helpUrl},
+		#{sysMenuVO.menuUrl}, #{sysMenuVO.busiCode}, #{sysMenuVO.menuName}, #{sysMenuVO.menuIco},#{sysMenuVO.delFlg}
+		)
+	</insert>
+	
+	<!-- 更新系统菜单-->
+	<update id="updateSysMenu" parameterType="com.ustcsoft.jt.vo.SysMenuVO"> 
+  		update M_MENU set 
+		            HELP_URL=#{helpUrl}, 
+		            MENU_URL=#{menuUrl}, 
+		            IS_POP=#{isPop},
+		            IS_LEAF=#{isLeaf},
+		            BUSI_CODE=#{busiCode}, 
+		            MENU_NAME=#{menuName},
+		            MENU_ICO=#{menuIco},
+		            DEL_FLG=#{delFlg}
+		           
+	 where
+				MENU_ID = #{menuId}
+	</update>
+	
+	<!-- 删除系统菜单-->
+	<delete id="deleteSysMenu"  parameterType="java.lang.String">
+		delete from  M_MENU where 
+				           MENU_ID like #{nodeId}
+				
+	</delete>
+	
+
+</mapper>

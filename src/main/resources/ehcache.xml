@@ -1,0 +1,31 @@
+<ehcache name="mycache" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+
+    <!-- 溢出到磁盘的目录 -->
+    <diskStore path="java.io.tmpdir"/>
+
+    <!--<defaultCache-->
+            <!--maxElementsInMemory="10000"--><!-- 存储最大对象数 -->
+            <!--eternal="false"--><!-- 是否永久保存 -->
+            <!--timeToIdleSeconds="120"--><!-- 最大空闲时间  单位：秒 -->
+            <!--timeToLiveSeconds="120"--><!-- 存活时间 -->
+            <!--overflowToDisk="true"--> <!-- 溢出到磁盘 -->
+            <!--maxElementsOnDisk="10000000"--> <!-- 磁盘上最大存储的对象数 -->
+            <!--diskPersistent="false"--> <!-- 服务器重启后磁盘上的数据是否有效 -->
+            <!--diskExpiryThreadIntervalSeconds="120"--><!-- 每隔多长时间去开启一次线程清理数据 -->
+            <!--memoryStoreEvictionPolicy="LRU"--> <!-- 淘汰策略    最近一段时间利用率低的会被优先清理掉 -->
+    <!--/>-->
+    <!-- 登录用户信息缓存 -->
+    <cache name="userTokenCach"
+           maxElementsInMemory="10000"
+           eternal="false"
+           timeToIdleSeconds="21600"
+           timeToLiveSeconds="43200"
+           overflowToDisk="true"
+           maxElementsOnDisk="10000"
+           diskPersistent="false"
+           memoryStoreEvictionPolicy="LRU"
+            >
+    </cache>
+
+</ehcache>

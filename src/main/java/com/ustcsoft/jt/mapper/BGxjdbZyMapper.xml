@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ustcsoft.jt.mapper.BGxjdbZyMapper">
+
+    <resultMap type="com.ustcsoft.jt.vo.BGxjdbZy" id="bGxjdbZyMap">
+            <result property="id" column="id"/>
+            <result property="dishi" column="dishi"/>
+            <result property="quxian" column="quxian"/>
+            <result property="kdid" column="kdid"/>
+            <result property="gxywbh" column="gxywbh"/>
+            <result property="lqgs" column="lqgs"/>
+            <result property="gxlx" column="gxlx"/>
+            <result property="gxsl" column="gxsl"/>
+            <result property="ywcsl" column="ywcsl"/>
+            <result property="kzr" column="kzr"/>
+            <result property="lxdh" column="lxdh"/>
+            <result property="pz" column="pz"/>
+            <result property="dj" column="dj"/>
+            <result property="xz" column="xz"/>
+            <result property="status" column="status"/>
+            <result property="fj" column="fj"/>
+            <result property="kssj" column="kssj"/>
+            <result property="jssj" column="jssj"/>
+    </resultMap>
+
+    <sql id="columns">
+            id as id,
+            dishi as dishi,
+            quxian as quxian,
+            kdid as kdid,
+            gxywbh as gxywbh,
+            lqgs as lqgs,
+            gxlx as gxlx,
+            gxsl as gxsl,
+            ywcsl as ywcsl,
+            kzr as kzr,
+            lxdh as lxdh,
+            pz as pz,
+            xz as xz,
+            dj as dj,
+            status as status,
+            fj as fj,
+            kssj as kssj,
+            jssj as jssj
+    </sql>
+
+    <!--根据用户id获取用户预约的购销计划列表-->
+    <select id="getGxjhList" parameterType="string" resultType="com.ustcsoft.jt.vo.BGxjdbZy">
+        SELECT
+        gx.gxywbh,
+        gx.id,
+        kd.kdmc
+        FROM
+        b_yuyue yy
+        inner JOIN u_01_tkyw.b_gxjdb_zy gx ON yy.gxId = gx.id
+        inner JOIN u_com00.m_kdxxb kd  on gx.kdid = kd.id
+        WHERE
+        yy.creater = #{userId}
+    </select>
+
+    <!--根据库点id查询库点购销计划-->
+    <select id="getGxjxByKdId" parameterType="string" resultType="com.ustcsoft.jt.vo.BGxjdbZy">
+            SELECT
+                gx.id,
+                gx.gxywbh,
+                gx.gxsl,
+                gx.ywcsl,
+                gx.pz,
+                gx.dj
+            FROM
+                u_com00.m_kdxxb kd
+            RIGHT JOIN u_01_tkyw.b_gxjdb_zy gx ON kd.id = gx.kdid
+            WHERE
+                kd.id = #{kdId}
+            ORDER BY
+                gx.kssj DESC
+    </select>
+
+    <select id="getGxjxByOrgId" parameterType="string" resultType="com.ustcsoft.jt.vo.BGxjdbZy">
+            SELECT
+                gx.id,
+                gx.gxywbh,
+                gx.gxsl,
+                gx.ywcsl,
+                gx.pz,
+                gx.dj
+            FROM
+                u_com00.m_org org
+            LEFT JOIN u_01_tkyw.b_gxjdb_zy gx ON org.ORG_ID = gx.kdid
+            WHERE
+                org.ORG_ID = #{orgId}
+            ORDER BY
+                gx.kssj DESC
+    </select>
+
+
+
+    <!--分页查询 默认没有条件-->
+    <select id="queryPage" parameterType="com.ustcsoft.jt.vo.BGxjdbZy" resultType="com.ustcsoft.jt.vo.BGxjdbZy">
+            select
+                <include refid="columns"/>
+            from b_gxjdb_zy
+    </select>
+</mapper>
