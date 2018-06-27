@@ -3,7 +3,6 @@ package com.ustcsoft.jt;
 import com.alibaba.fastjson.JSON;
 import com.ustcsoft.jt.util.HttpUtil;
 import com.ustcsoft.jt.util.JsonUtil;
-import sun.net.www.http.HttpClient;
 
 import java.util.*;
 
@@ -18,15 +17,41 @@ public class Jkcs {
 
         //String url = "http://106.3.145.72:49871/dxp/service/API/";
         //System.out.println(getMapJson(XYGLXX));
-        System.out.println("result:"+doUp(XYGLXX));
+        System.out.println("result:"+doUp("bh;String(32);主键，规则：XSHLSZLAQJC+6位行政区划+8位安全检测日期+6位顺序号。（不可空）@\n" +
+                "jcrq;String(8);yyyyMMdd（不可空）@\n" +
+                "xzqhdm;String(6);6位行政区划代码@\n" +
+                "xzqhmc;String(32);@\n" +
+                "qydd;String(32);@\n" +
+                "jd;Decimal(9,6);@\n" +
+                "wd;Decimal(9,6);@\n" +
+                "ypbh;String(32);@\n" +
+                "shsj;String(8);yyyyMMdd（不可空）@\n" +
+                "zjswr_qiqn;Decimal(10,2);@\n" +
+                "zjswr_ge;Decimal(10,2);@\n" +
+                "zjswr_gong;Decimal(10,2);@\n" +
+                "zjms_hqmds;Decimal(10,2);@\n" +
+                "zjms_otms;Decimal(10,2);@\n" +
+                "zjms_ymcmxt;Decimal(10,2);@\n" +
+                "zjms_lhk;Decimal(10,2);@\n" +
+                "zjms_ddw;Decimal(10,2);@\n" +
+                "zjms_mlll;Decimal(10,2);@\n" +
+                "zjms_xll;Decimal(10,2);@\n" +
+                "zjms_dsp;Decimal(10,2);@\n" +
+                "zjms_jbl;Decimal(10,2);@\n" +
+                "zjms_scl;Decimal(10,2);@\n" +
+                "zjms_lqjz;Decimal(10,2);@\n" +
+                "zjms_abhl;Decimal(10,2);@\n" +
+                "zjms_bmjhc;Decimal(10,2);@\n" +
+                "wsjysfhg;String(1);1:是；2否（不可空）@\n" +
+                "sfsc;String(1);1:删除；0不删除（不可空）@\n"));
 
     }
 
     public static String doUp(String xx) {
-        String url = "http://106.3.145.72:49871/dxp/service/API/GDDAXX";
+        String url = "http://106.3.145.72:49871/dxp/service/API/XSHLSZLAQJCYCZ";
         System.out.println("url:"+url);
         String data = getMapJson(xx);
-        String orderid = "ff808081642730c4016428703ab30fd9";
+        String orderid = "ff8080816434c264016434d3285901dc";
         //String orderid = "40281f81642fa26b01642fad365e0076";
         Map map = new HashMap();
         map.put("id", UUID.randomUUID().toString().replace("-", ""));
@@ -50,7 +75,7 @@ public class Jkcs {
                 "\"qydm\": \"328006450000000000001001\"," +
                 "\"lrrq\": \"2018-06-01\"" +
                 "}]");*/
-        map.put("data", "[{\"jh\":\"00000000000000000000000000000000\",\"ys\":0,\"wjzt\":\"0\",\"dqsj\":\"2018-06-01 12:00:00\",\"gdmlmc\":\"00000000000000000000000000000000\",\"sqrq\":\"\",\"wjbh\":\"00000000000000000000000000000000\",\"fwcs\":\"\",\"zzjgbh\":\"\",\"sfsdcl\":\"0\",\"sfsc\":\"0\",\"gdr\":\"00000000000000000000000000000000\",\"shzt\":\"0\",\"bz\":\"\",\"wjfj\":\"\",\"xhsqr\":\"\",\"zrz\":\"\",\"gdsj\":\"2018-06-01 12:00:00\",\"clfs\":\"0\",\"xhrq\":\"\",\"wjsl\":0,\"swlx\":\"0\",\"clfscdnf\":\"0\",\"fjlj\":\"\",\"dajmcd\":\"\",\"bcnf\":\"00000000000000000000000000000000\",\"gdxxfj\":\"\",\"lsdadh\":\"0\",\"wjmc\":\"00000000000000000000000000000000\"}]\n");
+        map.put("data", "[{\"zjswr_ge\":0,\"zjms_scl\":0,\"zjswr_gong\":0,\"qydd\":\"00000000000000000000000000000000\",\"zjms_dsp\":0,\"zjms_jbl\":0,\"jd\":0,\"zjms_abhl\":0,\"xzqhdm\":\"000000\",\"zjms_lhk\":0,\"sfsc\":\"0\",\"zjms_mlll\":0,\"bh\":\"YCZXSHLSZLAQJC34000020180620123456\",\"zjms_ymcmxt\":0,\"zjms_lqjz\":0,\"ypbh\":\"00000000000000000000000000000000\",\"zjswr_qiqn\":0,\"zjms_otms\":0,\"zjms_xll\":0,\"shsj\":\"20180601\",\"xzqhmc\":\"00000000000000000000000000000000\",\"jcrq\":\"20180601\",\"zjms_hqmds\":0,\"zjms_ddw\":0,\"wsjysfhg\":\"1\",\"wd\":0,\"zjms_bmjhc\":0}]\n");
         map.put("digst", "");
         String mapStr = JsonUtil.objectToJson(map);
         System.out.println("mapStr:"+map.get("data"));
@@ -77,28 +102,32 @@ public class Jkcs {
                     dataMap.put(mapstrs[0],(int)((Math.random()*9+1)*100000000)+"000000000001001");
                     continue;
                 }
+                if("BH".equals(mapstrs[0].trim())){
+                    dataMap.put(mapstrs[0].toLowerCase(),"XXXXXX"+"34000020180620123456");
+                    continue;
+                }
                 if(mapstrs.length>2&&mapstrs[2].contains("yyyy-MM-dd")){
                     if(mapstrs[1].contains("10")){
-                        dataMap.put(mapstrs[0],"2018-06-01");
+                        dataMap.put(mapstrs[0].toLowerCase(),"2018-06-01");
                         continue;
                     }else {
-                        dataMap.put(mapstrs[0],"2018-06-01 12:00:00");
+                        dataMap.put(mapstrs[0].toLowerCase(),"2018-06-01 12:00:00");
                         continue;
                     }
                 }
                 if(mapstrs.length>2&&mapstrs[2].contains("yyyyMMdd")){
-                        dataMap.put(mapstrs[0],"20180601");
+                        dataMap.put(mapstrs[0].toLowerCase(),"20180601");
                         continue;
                 }
 
-                    dataMap.put(mapstrs[0], mapstrs[1].contains("String") ? getMapValue(astr[i]) : 0);
+                    dataMap.put(mapstrs[0].toLowerCase(), mapstrs[1].contains("String") ? getMapValue(astr[i]) : 0);
               //  System.out.println(mapstrs[0]);
 
                 //System.out.println(mapstrs[0]+":"+(mapstrs[1].contains("String")?getMapValue(astr[i]):0));
             }
 
         }
-        dataMap.put("SFSC", "0");
+        dataMap.put("sfsc", "0");
         dataList.add(dataMap);
         System.out.println(JSON.toJSON(dataList));
         return JsonUtil.objectToJson(dataList);

@@ -69,7 +69,7 @@ public class SjkTest1 {
         }*/
         String url="http://36.7.135.172:40015/zhwl-sjk/private/heartBeat";
         String url2="http://127.0.0.7:8080/sjk/private/heartBeat";
-        String orderid="ff808081642730c4016428703ab30fd9";
+        String orderid="ff8080816434c264016434d3285901dc";
         Map<String, Object> map2 = new HashMap<String, Object>();
         map2.put("orderid","adjgkd86ndksngkse9hf9urbvao2rs23");
         map2.put("type","1");
