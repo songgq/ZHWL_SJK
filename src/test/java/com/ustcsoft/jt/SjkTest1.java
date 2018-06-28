@@ -65,7 +65,7 @@ public class SjkTest1 {
            String a= HttpUtil.doPost(url,JsonUtil.objectToJson(map2));
             System.out.println("a="+a);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace();q
         }*/
         String url="http://36.7.135.172:40015/zhwl-sjk/private/heartBeat";
         String url2="http://127.0.0.7:8080/sjk/private/heartBeat";
