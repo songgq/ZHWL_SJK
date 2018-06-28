@@ -259,8 +259,8 @@ public interface ShengjkMapper {
 
 
     @Select("SELECT \n" +
-            "CONCAT(g.enterprise_code,'000000000',g.graindepot_gb_code,g.storehouse_gb_code,g.warehouse_gb_code,g.grainallocation_code,'2017',right(g.id,6)) as bm,\n" +
-            "ifnull(DATE_ADD(g.grain_situation_gather_time,INTERVAL 10 DAY),'1900-01-01 00:00:00') as jcsj,\n" +
+            "CONCAT(g.enterprise_code,'000000000',g.graindepot_gb_code,g.storehouse_gb_code,g.warehouse_gb_code,g.grainallocation_code,'2017',mid(g.id,9,6)) as bm,\n" +
+            "ifnull(DATE_ADD(g.grain_situation_gather_time,INTERVAL 15 DAY),'1900-01-01 00:00:00') as jcsj,\n" +
             "ifnull(grain_outside_temperature,0) as cfww,\n" +
             "ifnull(grain_outside_humidity,0) as cfws,\n" +
             "ifnull(grain_inside_temperature,0) as cfnw,\n" +
